@@ -22,7 +22,7 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
-  height: 60px;
+  
 
   display: flex;
   justify-content: space-between;
@@ -31,6 +31,12 @@ body {
 
   z-index: 1000;
   overflow: hidden;
+     height: 50px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.6),
+    rgba(0,0,0,0)
+  );
 }
 
 /* 🔥 BLURRED BACKGROUND IMAGE */
@@ -39,7 +45,7 @@ body {
   top: 0;
   left: 0;
   width: 110%;
-
+height: 110px;
 
   background: url('your-image.jpg') center/cover no-repeat;
 
@@ -48,12 +54,7 @@ body {
   opacity: 0.6;
   z-index: 0;
   
-   height: 50px;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.6),
-    rgba(0,0,0,0)
-  );
+
 }
 
 /* Optional dark overlay for readability */
