@@ -9,7 +9,7 @@
 
 <style>
 
-/* ===== GLOBAL ===== */
+/* ================= GLOBAL ================= */
 body {
   margin: 0;
   background: #000;
@@ -17,12 +17,12 @@ body {
   font-family: Arial;
 }
 
-/* ===== HEADER ===== */
+/* ================= HEADER ================= */
 .header {
   position: fixed;
   top: 0;
   width: 100%;
-  
+  height: 60px;
 
   display: flex;
   justify-content: space-between;
@@ -31,42 +31,27 @@ body {
 
   z-index: 1000;
   overflow: hidden;
-     height: 50px;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.6),
-    rgba(0,0,0,0)
-  );
+  background: transparent;
 }
 
-/* 🔥 BLURRED BACKGROUND IMAGE */
+/* Blurred background image */
 .header-bg {
   position: absolute;
   top: 0;
   left: 0;
-  width: 110%;
-height: 110%;
+  width: 100%;
+  height: 100%;
 
   background: url('landscape-wide-7d.jpg') center/cover no-repeat;
 
-  filter: blur(10px);
-  transform: scale(1.2); /* prevents edge cut */
-  opacity: 0.6;
+  filter: blur(12px);
+  transform: scale(1.3);
+  opacity: 0.7;
+
   z-index: 0;
-  
-
 }
 
-/* Optional dark overlay for readability */
-.header-bg::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-}
-
-/* Keep content above blur */
+/* Content above blur */
 .logo, .search {
   position: relative;
   z-index: 2;
@@ -79,19 +64,39 @@ height: 110%;
 .search img {
   height: 28px;
 }
-/* Space below header */
+
+/* 🔥 HEADER TO CAROUSEL GRADIENT BRIDGE */
+.header::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 90px;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.75),
+    rgba(0,0,0,0)
+  );
+
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ================= MAIN ================= */
 .main {
   margin-top: 60px;
 }
 
-/* ===== HERO ===== */
+/* ================= HERO ================= */
 .carousel-item video {
   width: 100%;
   height: 60vh;
   object-fit: cover;
 }
 
-/* Dark overlay like Netflix */
+/* Dark overlay on video */
 .carousel-item::after {
   content: "";
   position: absolute;
@@ -99,10 +104,11 @@ height: 110%;
   height: 100%;
   top: 0;
   left: 0;
+
   background: linear-gradient(to top, black, transparent);
 }
 
-/* ===== ROWS ===== */
+/* ================= ROWS ================= */
 .row-title {
   margin: 15px;
   font-size: 18px;
@@ -125,12 +131,11 @@ height: 110%;
   transform: scale(1.1);
 }
 
-/* Hide scrollbar */
 .scroll-row::-webkit-scrollbar {
   display: none;
 }
 
-/* ===== MOBILE ===== */
+/* ================= MOBILE ================= */
 @media (max-width: 600px) {
   .carousel-item video {
     height: 40vh;
@@ -148,11 +153,9 @@ height: 110%;
 
 <!-- HEADER -->
 <div class="header">
-  
-  <!-- background image layer -->
+
   <div class="header-bg"></div>
 
-  <!-- content -->
   <div class="logo">
     <img src="sitelogo-removebg-preview.png">
   </div>
@@ -173,14 +176,14 @@ height: 110%;
   <div class="carousel-inner">
 
     <div class="carousel-item active">
-      <video autoplay muted loop playsinline poster="poster1.jpg">
-        <source src="video/Avengers Doomsday  Only in Theaters December 18, 2026.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline>
+        <source src="video/Avengers Doomsday  Only in Theaters December 18, 2026.mp4">
       </video>
     </div>
 
     <div class="carousel-item">
-      <video autoplay muted loop playsinline poster="poster2.jpg">
-        <source src="video/Marvel Studios’ Loki Season 2 _ Mid-Season Trailer.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline>
+        <source src="video/Marvel Studios’ Loki Season 2 _ Mid-Season Trailer.mp4">
       </video>
     </div>
 
@@ -188,39 +191,29 @@ height: 110%;
 
 </div>
 
-<!-- MOVIE ROW -->
+<!-- MOVIES -->
 <div class="row-title">Latest Movies</div>
 <div class="scroll-row">
-  <img src="https://picsum.photos/1600/400/?image=67">
-  <img src="https://picsum.photos/1600/400/?image=686">
-  <img src="https://picsum.photos/1600/400/?image=696">
-  <img src="https://picsum.photos/1600/400/?image=67">
-  <img src="https://picsum.photos/1600/400/?image=686">
-  <img src="https://picsum.photos/1600/400/?image=696">
-  <img src="https://i.ibb.co/dpT72Lt/Adobe-Express-20240219-2122290-1.png" alt="Adobe-Express-20240708-1437050-1">
+  <img src="https://picsum.photos/300/400?1">
+  <img src="https://picsum.photos/300/400?2">
+  <img src="https://picsum.photos/300/400?3">
+  <img src="https://picsum.photos/300/400?4">
+  <img src="https://picsum.photos/300/400?5">
 </div>
 
 <!-- WEB SERIES -->
 <div class="row-title">Web Series</div>
 <div class="scroll-row">
- <img src="https://picsum.photos/1600/400/?image=696">
-  <img src="https://picsum.photos/1600/400/?image=67">
-  <img src="https://picsum.photos/1600/400/?image=686">
-  <img src="https://picsum.photos/1600/400/?image=696">
-  <img src="https://picsum.photos/1600/400/?image=696" alt="Adobe-Express-20240708-1437050-1">
-  <img src="img7.jpg">
+  <img src="https://picsum.photos/300/400?6">
+  <img src="https://picsum.photos/300/400?7">
+  <img src="https://picsum.photos/300/400?8">
+  <img src="https://picsum.photos/300/400?9">
 </div>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  document.querySelectorAll('.hero-video').forEach(video => {
-  video.addEventListener('ended', () => {
-    $('#heroCarousel').carousel('next');
-  });
-});
-</script>
+
 </body>
 </html>
