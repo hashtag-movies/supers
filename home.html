@@ -28,81 +28,77 @@ body{
 
 /* ================= HEADER ================= */
 
-.header{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:65px;
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
 
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  width: 100%;
+  height: 60px;
 
-  padding:0 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  z-index:1000;
+  padding: 0 15px;
+
+  z-index: 1000;
+
+  background: transparent;
 }
 
-/* Blur Layer */
-
-.header-bg{
-  position:absolute;
-  inset:0;
-
-  background:url('landscape-wide-7d.jpg') center/cover no-repeat;
-
-  filter:blur(15px);
-  transform:scale(1.4);
-
-  opacity:.6;
-  z-index:0;
+/* REMOVE OLD BACKGROUND */
+.header-bg {
+  display: none;
 }
 
-/* Dark overlay */
+/* Logo + Search Container */
 
-.header::before{
-  content:"";
-  position:absolute;
-  inset:0;
+.logo,
+.search {
+  position: relative;
+  z-index: 2;
 
-  background:rgba(0,0,0,.45);
-  z-index:1;
+  padding: 8px 12px;
+
+  border-radius: 12px;
+
+  /* Blur only behind logo/search */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  background: rgba(0,0,0,0.25);
 }
 
-/* Bottom fade */
+/* Logo image */
+.logo img {
+  height: 40px;
+}
 
-.header::after{
-  content:"";
-  position:absolute;
-  left:0;
-  bottom:-1px;
+/* Search image */
+.search img {
+  height: 28px;
+  filter: invert(1);
+}
 
-  width:100%;
-  height:90px;
+/* Optional soft bottom fade */
+.header::after {
+  content: "";
+  position: absolute;
 
-  background:linear-gradient(
+  left: 0;
+  bottom: -1px;
+
+  width: 100%;
+  height: 70px;
+
+  background: linear-gradient(
     to bottom,
-    rgba(0,0,0,.7),
+    rgba(0,0,0,0.4),
     rgba(0,0,0,0)
   );
 
-  z-index:1;
-}
-
-.logo,
-.search{
-  position:relative;
-  z-index:2;
-}
-
-.logo img{
-  height:42px;
-}
-
-.search img{
-  height:28px;
-  filter:invert(1);
+  pointer-events: none;
 }
 
 /* ================= MAIN ================= */
@@ -227,8 +223,6 @@ body{
 <!-- ================= HEADER ================= -->
 
 <div class="header">
-
-  <div class="header-bg"></div>
 
   <div class="logo">
     <img src="sitelogo-removebg-preview.png">
