@@ -253,6 +253,66 @@ body{
 
 }
 
+  /* ================= FEATURED IMAGE ROW ================= */
+
+.featured-row {
+
+  display: flex;
+  gap: 15px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 20px 15px;
+
+  scroll-behavior: smooth;
+}
+
+.featured-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* Images */
+
+.featured-row img {
+
+  flex: 0 0 auto;
+
+  width: 420px;
+  height: 220px;
+
+  object-fit: cover;
+
+  border-radius: 14px;
+
+  transition: 0.35s;
+  cursor: pointer;
+}
+
+/* Hover */
+
+.featured-row img:hover {
+  transform: scale(1.03);
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+  .featured-row {
+    padding: 15px 10px;
+    gap: 10px;
+  }
+
+  .featured-row img {
+
+    width: 280px;
+    height: 150px;
+
+    border-radius: 10px;
+  }
+
+}
 </style>
 </head>
 
@@ -309,6 +369,22 @@ data-interval="5000">
 
 </div>
 
+
+  <!-- ================= FEATURED ROW ================= -->
+
+<div class="featured-row">
+
+  <img src="https://picsum.photos/800/300?1">
+
+  <img src="https://picsum.photos/800/300?2">
+
+  <img src="https://picsum.photos/800/300?3">
+
+  <img src="https://picsum.photos/800/300?4">
+
+</div>
+
+  
 <!-- ================= MOVIES ================= -->
 
 <div class="section">
