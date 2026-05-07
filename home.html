@@ -3,147 +3,220 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Hashtag Movies</title>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
 <style>
 
 /* ================= GLOBAL ================= */
-body {
-  margin: 0;
-  background: #000;
-  color: #fff;
-  font-family: Arial;
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#000;
+  color:#fff;
+  font-family:Arial, sans-serif;
+  overflow-x:hidden;
 }
 
 /* ================= HEADER ================= */
-.header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 60px;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 15px;
+.header{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:65px;
 
-  z-index: 1000;
-  overflow: hidden;
-  background: transparent;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  padding:0 18px;
+
+  z-index:1000;
 }
 
-/* Blurred background image */
-.header-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+/* Blur Layer */
 
-  background: url('landscape-wide-7d.jpg') center/cover no-repeat;
+.header-bg{
+  position:absolute;
+  inset:0;
 
-  filter: blur(12px);
-  transform: scale(1.3);
-  opacity: 0.7;
+  background:url('landscape-wide-7d.jpg') center/cover no-repeat;
 
-  z-index: 0;
+  filter:blur(15px);
+  transform:scale(1.4);
+
+  opacity:.6;
+  z-index:0;
 }
 
-/* Content above blur */
-.logo, .search {
-  position: relative;
-  z-index: 2;
+/* Dark overlay */
+
+.header::before{
+  content:"";
+  position:absolute;
+  inset:0;
+
+  background:rgba(0,0,0,.45);
+  z-index:1;
 }
 
-.logo img {
-  height: 40px;
-}
+/* Bottom fade */
 
-.search img {
-  height: 28px;
-}
+.header::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-1px;
 
-/* 🔥 HEADER TO CAROUSEL GRADIENT BRIDGE */
-.header::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 100%;
-  height: 90px;
+  width:100%;
+  height:90px;
 
-  background: linear-gradient(
+  background:linear-gradient(
     to bottom,
-    rgba(0,0,0,0.75),
+    rgba(0,0,0,.7),
     rgba(0,0,0,0)
   );
 
-  z-index: 1;
-  pointer-events: none;
+  z-index:1;
+}
+
+.logo,
+.search{
+  position:relative;
+  z-index:2;
+}
+
+.logo img{
+  height:42px;
+}
+
+.search img{
+  height:28px;
+  filter:invert(1);
 }
 
 /* ================= MAIN ================= */
-.main {
-  margin-top: 60px;
+
+.main{
+  margin-top:65px;
 }
 
 /* ================= HERO ================= */
-.carousel-item video {
-  width: 100%;
-  height: 60vh;
-  object-fit: cover;
+
+.carousel-item{
+  position:relative;
 }
 
-/* Dark overlay on video */
-.carousel-item::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-
-  background: linear-gradient(to top, black, transparent);
+.carousel-item video{
+  width:100%;
+  height:70vh;
+  object-fit:cover;
 }
 
-/* ================= ROWS ================= */
-.row-title {
-  margin: 15px;
-  font-size: 18px;
+/* Cinematic overlay */
+
+.carousel-item::after{
+  content:"";
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(to top, #000 5%, transparent 50%),
+    linear-gradient(to bottom, #000 0%, transparent 20%);
 }
 
-.scroll-row {
-  display: flex;
-  overflow-x: auto;
-  gap: 10px;
-  padding: 10px;
+/* ================= SECTION ================= */
+
+.section{
+  margin-top:20px;
 }
 
-.scroll-row img {
-  height: 160px;
-  border-radius: 10px;
-  transition: transform 0.3s;
+.row-title{
+  font-size:20px;
+  font-weight:bold;
+  margin-left:15px;
+  margin-bottom:10px;
 }
 
-.scroll-row img:hover {
-  transform: scale(1.1);
+/* ================= SCROLL ROW ================= */
+
+.scroll-row{
+  display:flex;
+  gap:12px;
+
+  overflow-x:auto;
+  overflow-y:hidden;
+
+  padding:10px 15px 20px;
+  scroll-behavior:smooth;
 }
 
-.scroll-row::-webkit-scrollbar {
-  display: none;
+.scroll-row::-webkit-scrollbar{
+  display:none;
+}
+
+.movie-card{
+  flex:0 0 auto;
+  transition:.35s;
+}
+
+.movie-card img{
+  width:120px;
+  height:180px;
+
+  object-fit:cover;
+
+  border-radius:10px;
+}
+
+/* Hover effect */
+
+.movie-card:hover{
+  transform:scale(1.08);
 }
 
 /* ================= MOBILE ================= */
-@media (max-width: 600px) {
-  .carousel-item video {
-    height: 40vh;
+
+@media(max-width:768px){
+
+  .carousel-item video{
+    height:45vh;
   }
 
-  .scroll-row img {
-    height: 120px;
+  .movie-card img{
+    width:100px;
+    height:150px;
   }
+
+  .row-title{
+    font-size:18px;
+  }
+
+  .logo img{
+    height:36px;
+  }
+
+}
+
+/* ================= DESKTOP ================= */
+
+@media(min-width:1200px){
+
+  .movie-card img{
+    width:150px;
+    height:220px;
+  }
+
 }
 
 </style>
@@ -151,7 +224,8 @@ body {
 
 <body>
 
-<!-- HEADER -->
+<!-- ================= HEADER ================= -->
+
 <div class="header">
 
   <div class="header-bg"></div>
@@ -170,49 +244,103 @@ body {
 
 <div class="main">
 
-<!-- HERO CAROUSEL -->
-<div id="heroCarousel" class="carousel slide" data-ride="carousel">
+<!-- ================= HERO CAROUSEL ================= -->
+
+<div id="heroCarousel"
+class="carousel slide carousel-fade"
+data-ride="carousel"
+data-interval="5000">
 
   <div class="carousel-inner">
 
+    <!-- ITEM 1 -->
+
     <div class="carousel-item active">
+
       <video autoplay muted loop playsinline>
-        <source src="video/Avengers Doomsday  Only in Theaters December 18, 2026.mp4">
+        <source src="video/Avengers.mp4" type="video/mp4">
       </video>
+
     </div>
 
+    <!-- ITEM 2 -->
+
     <div class="carousel-item">
+
       <video autoplay muted loop playsinline>
-        <source src="video/Marvel Studios’ Loki Season 2 _ Mid-Season Trailer.mp4">
+        <source src="video/Loki.mp4" type="video/mp4">
       </video>
+
     </div>
 
   </div>
 
 </div>
 
-<!-- MOVIES -->
-<div class="row-title">Latest Movies</div>
-<div class="scroll-row">
-  <img src="https://picsum.photos/300/400?1">
-  <img src="https://picsum.photos/300/400?2">
-  <img src="https://picsum.photos/300/400?3">
-  <img src="https://picsum.photos/300/400?4">
-  <img src="https://picsum.photos/300/400?5">
+<!-- ================= MOVIES ================= -->
+
+<div class="section">
+
+  <div class="row-title">Latest Movies</div>
+
+  <div class="scroll-row">
+
+    <div class="movie-card">
+      <img src="https://picsum.photos/300/400?1">
+    </div>
+
+    <div class="movie-card">
+      <img src="https://picsum.photos/300/400?2">
+    </div>
+
+    <div class="movie-card">
+      <img src="https://picsum.photos/300/400?3">
+    </div>
+
+    <div class="movie-card">
+      <img src="https://picsum.photos/300/400?4">
+    </div>
+
+    <div class="movie-card">
+      <img src="https://picsum.photos/300/400?5">
+    </div>
+
+  </div>
+
 </div>
 
-<!-- WEB SERIES -->
-<div class="row-title">Web Series</div>
-<div class="scroll-row">
-  <img src="https://picsum.photos/300/400?6">
-  <img src="https://picsum.photos/300/400?7">
-  <img src="https://picsum.photos/300/400?8">
-  <img src="https://picsum.photos/300/400?9">
+<!-- ================= WEB SERIES ================= -->
+
+<div class="section">
+
+  <div class="row-title">Web Series</div>
+
+  <div class="scroll-row">
+
+    <div class="movie-card">
+      <img src="https://picsum.photos/300/400?6">
+    </div>
+
+    <div class="movie-card">
+      <img src="https://picsum.photos/300/400?7">
+    </div>
+
+    <div class="movie-card">
+      <img src="https://picsum.photos/300/400?8">
+    </div>
+
+    <div class="movie-card">
+      <img src="https://picsum.photos/300/400?9">
+    </div>
+
+  </div>
+
 </div>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
