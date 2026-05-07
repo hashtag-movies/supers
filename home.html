@@ -253,32 +253,24 @@ body{
 
 }
 
-  /* ================= FEATURED IMAGE ROW ================= */
+/* ================= FEATURED IMAGE ROW ================= */
 
 .featured-row {
 
   display: flex;
+  justify-content: center;
   gap: 15px;
-
-  overflow-x: auto;
-  overflow-y: hidden;
 
   padding: 20px 15px;
 
-  scroll-behavior: smooth;
-}
-
-.featured-row::-webkit-scrollbar {
-  display: none;
+  flex-wrap: wrap;
 }
 
 /* Images */
 
 .featured-row img {
 
-  flex: 0 0 auto;
-
-  width: 420px;
+  width: 23%;
   height: 220px;
 
   object-fit: cover;
@@ -295,19 +287,30 @@ body{
   transform: scale(1.03);
 }
 
+/* ================= TABLET ================= */
+
+@media (max-width: 992px) {
+
+  .featured-row img {
+    width: 48%;
+    height: 180px;
+  }
+
+}
+
 /* ================= MOBILE ================= */
 
 @media (max-width: 768px) {
 
   .featured-row {
-    padding: 15px 10px;
     gap: 10px;
+    padding: 15px 10px;
   }
 
   .featured-row img {
 
-    width: 280px;
-    height: 150px;
+    width: 48%;
+    height: 130px;
 
     border-radius: 10px;
   }
