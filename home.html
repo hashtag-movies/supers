@@ -252,16 +252,33 @@ body{
   }
 
 }
+  
+/* ================= FEATURED CONTAINER ================= */
 
-/* ================= FEATURED IMAGE ROW ================= */
+.featured-container {
+
+  width: 95%;
+  margin: 25px auto;
+
+  padding: 20px;
+
+  border-radius: 18px;
+
+  background: rgba(255,255,255,0.04);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ================= IMAGE ROW ================= */
 
 .featured-row {
 
   display: flex;
   justify-content: center;
   gap: 15px;
-
-  padding: 20px 15px;
 
   flex-wrap: wrap;
 }
@@ -281,7 +298,7 @@ body{
   cursor: pointer;
 }
 
-/* Hover */
+/* Hover Effect */
 
 .featured-row img:hover {
   transform: scale(1.03);
@@ -292,6 +309,7 @@ body{
 @media (max-width: 992px) {
 
   .featured-row img {
+
     width: 48%;
     height: 180px;
   }
@@ -302,9 +320,17 @@ body{
 
 @media (max-width: 768px) {
 
+  .featured-container {
+
+    width: 94%;
+    padding: 12px;
+
+    border-radius: 14px;
+  }
+
   .featured-row {
+
     gap: 10px;
-    padding: 15px 10px;
   }
 
   .featured-row img {
@@ -373,17 +399,21 @@ data-interval="5000">
 </div>
 
 
-  <!-- ================= FEATURED ROW ================= -->
+<!-- ================= FEATURED CONTAINER ================= -->
 
-<div class="featured-row">
+<div class="featured-container">
 
-  <img src="https://picsum.photos/800/300?1">
+  <div class="featured-row">
 
-  <img src="https://picsum.photos/800/300?2">
+    <img src="https://picsum.photos/800/300?1">
 
-  <img src="https://picsum.photos/800/300?3">
+    <img src="https://picsum.photos/800/300?2">
 
-  <img src="https://picsum.photos/800/300?4">
+    <img src="https://picsum.photos/800/300?3">
+
+    <img src="https://picsum.photos/800/300?4">
+
+  </div>
 
 </div>
 
