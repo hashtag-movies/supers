@@ -1,284 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Slide Navigation Buttons</title>
-
-<style>
-
-/* ================= GLOBAL ================= */
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body{
-  background:#000;
-  font-family:Arial,sans-serif;
-  overflow:hidden;
-}
-
-/* ================= MAIN PAGE ================= */
-
-.main-page{
-  width:100%;
-  height:100vh;
-
-  position:relative;
-}
-
-/* Background Image */
-
-.main-page img{
-  width:100%;
-  height:100%;
-
-  object-fit:cover;
-}
-
-/* Dark Overlay */
-
-.overlay{
-  position:absolute;
-  inset:0;
-
-  background:rgba(0,0,0,0.45);
-}
-
-/* Main Title */
-
-.title{
-  position:absolute;
-
-  top:50%;
-  left:50%;
-
-  transform:translate(-50%,-50%);
-
-  color:#fff;
-
-  font-size:70px;
-  font-weight:bold;
-
-  z-index:10;
-
-  text-shadow:0 0 20px #000;
-}
-
-/* ================= SIDE BUTTONS ================= */
-
-.side-buttons{
-  position:fixed;
-
-  top:50%;
-  right:0;
-
-  transform:translateY(-50%);
-
-  display:flex;
-  flex-direction:column;
-
-  gap:12px;
-
-  z-index:9999;
-}
-
-/* Remove Link Style */
-
-.side-buttons a{
-  text-decoration:none;
-}
-
-/* ================= BUTTON ================= */
-
-.nav-btn{
-  width:75px;
-  height:62px;
-
-  border:none;
-  outline:none;
-
-  overflow:hidden;
-
-  cursor:pointer;
-
-  background:#111;
-
-  border-radius:18px 0 0 18px;
-
-  transition:0.45s ease;
-
-  position:relative;
-}
-
-/* Image */
-
-.nav-btn img{
-  width:100%;
-  height:100%;
-
-  object-fit:cover;
-}
-
-/* Hover Slide */
-
-.nav-btn:hover{
-  width:240px;
-
-  transform:translateX(0);
-
-  box-shadow:
-  0 0 20px rgba(255,255,255,0.35);
-}
-
-/* Shine Effect */
-
-.nav-btn::before{
-  content:"";
-
-  position:absolute;
-
-  top:0;
-  left:-100%;
-
-  width:100%;
-  height:100%;
-
-  background:linear-gradient(
-    120deg,
-    transparent,
-    rgba(255,255,255,0.3),
-    transparent
-  );
-
-  transition:0.6s;
-}
-
-.nav-btn:hover::before{
-  left:100%;
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:768px){
-
-  .title{
-    font-size:40px;
-  }
-
-  .nav-btn{
-    width:60px;
-    height:50px;
-  }
-
-  .nav-btn:hover{
-    width:160px;
-  }
-
-}
-
-</style>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>4 Slide Buttons</title>
+
+  <style>
+    body{
+      margin:0;
+      padding:40px;
+      background:#f4f4f4;
+      font-family:Arial, sans-serif;
+      display:flex;
+      flex-direction:column;
+      gap:25px;
+      align-items:center;
+    }
+
+    .slider-container{
+      width:350px;
+      height:70px;
+      background:#ddd;
+      border-radius:50px;
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .slider-text{
+      position:absolute;
+      width:100%;
+      text-align:center;
+      line-height:70px;
+      color:#555;
+      font-size:20px;
+      user-select:none;
+    }
+
+    .slider-btn{
+      width:70px;
+      height:70px;
+      border-radius:50%;
+      position:absolute;
+      right:0;
+      top:0;
+      cursor:pointer;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:white;
+      font-size:28px;
+      font-weight:bold;
+      user-select:none;
+    }
+
+    .blue{ background:#007bff; }
+    .green{ background:#28a745; }
+    .red{ background:#dc3545; }
+    .orange{ background:#fd7e14; }
+  </style>
 </head>
-
 <body>
 
-<!-- ================= MAIN PAGE ================= -->
-
-<div class="main-page">
-
-  <img src="https://picsum.photos/id/1015/1600/900">
-
-  <div class="overlay"></div>
-
-  <div class="title">
-    HOME PAGE
+  <!-- BUTTON 1 -->
+  <div class="slider-container">
+    <div class="slider-text">Slide for Google</div>
+    <div class="slider-btn blue" data-url="https://google.com">◀</div>
   </div>
 
-</div>
+  <!-- BUTTON 2 -->
+  <div class="slider-container">
+    <div class="slider-text">Slide for YouTube</div>
+    <div class="slider-btn green" data-url="https://youtube.com">◀</div>
+  </div>
 
-<!-- ================= RIGHT SIDE BUTTONS ================= -->
+  <!-- BUTTON 3 -->
+  <div class="slider-container">
+    <div class="slider-text">Slide for Facebook</div>
+    <div class="slider-btn red" data-url="https://facebook.com">◀</div>
+  </div>
 
-<div class="side-buttons">
+  <!-- BUTTON 4 -->
+  <div class="slider-container">
+    <div class="slider-text">Slide for OpenAI</div>
+    <div class="slider-btn orange" data-url="https://openai.com">◀</div>
+  </div>
 
-  <!-- HOME -->
-  <a href="home.html">
-    <button class="nav-btn">
-      <img src="https://picsum.photos/id/1015/300/200">
-    </button>
-  </a>
+  <script>
+    const sliders = document.querySelectorAll(".slider-btn");
 
-  <!-- MOVIES -->
-  <a href="movies.html">
-    <button class="nav-btn">
-      <img src="https://picsum.photos/id/1016/300/200">
-    </button>
-  </a>
+    sliders.forEach(slider => {
 
-  <!-- SERIES -->
-  <a href="series.html">
-    <button class="nav-btn">
-      <img src="https://picsum.photos/id/1018/300/200">
-    </button>
-  </a>
+      let isDragging = false;
+      let startX = 0;
 
-  <!-- ANIME -->
-  <a href="anime.html">
-    <button class="nav-btn">
-      <img src="https://picsum.photos/id/1020/300/200">
-    </button>
-  </a>
+      slider.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        startX = e.clientX;
+      });
 
-  <!-- MARVEL -->
-  <a href="marvel.html">
-    <button class="nav-btn">
-      <img src="https://picsum.photos/id/1024/300/200">
-    </button>
-  </a>
+      document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
 
-  <!-- DC -->
-  <a href="dc.html">
-    <button class="nav-btn">
-      <img src="https://picsum.photos/id/1025/300/200">
-    </button>
-  </a>
+        let moveX = startX - e.clientX;
 
-  <!-- SPORTS -->
-  <a href="sports.html">
-    <button class="nav-btn">
-      <img src="https://picsum.photos/id/1035/300/200">
-    </button>
-  </a>
+        if (moveX < 0) moveX = 0;
+        if (moveX > 280) moveX = 280;
 
-  <!-- KIDS -->
-  <a href="kids.html">
-    <button class="nav-btn">
-      <img src="https://picsum.photos/id/1040/300/200">
-    </button>
-  </a>
+        slider.style.right = moveX + "px";
 
-  <!-- DOWNLOADS -->
-  <a href="downloads.html">
-    <button class="nav-btn">
-      <img src="https://picsum.photos/id/1050/300/200">
-    </button>
-  </a>
+        // Redirect when fully slid
+        if (moveX >= 270) {
+          window.location.href = slider.dataset.url;
+        }
+      });
 
-  <!-- PROFILE -->
-  <a href="profile.html">
-    <button class="nav-btn">
-      <img src="https://picsum.photos/id/1060/300/200">
-    </button>
-  </a>
+      document.addEventListener("mouseup", () => {
+        if (!isDragging) return;
 
-</div>
+        isDragging = false;
+        slider.style.right = "0px";
+      });
+
+    });
+  </script>
 
 </body>
-
 </html>
