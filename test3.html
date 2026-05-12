@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blur Floating Buttons</title>
+
+  <style>
+    body{
+      margin:0;
+      height:100vh;
+      background:url('https://i.ibb.co/PsMg4CJp/Crimson-Samurai-Monochrome-Vigil-Moonlit-Oath.jpg') center/cover no-repeat;
+      font-family:Arial, sans-serif;
+    }
+
+    /* RIGHT SIDE BUTTONS */
+    .floating-buttons{
+      position:fixed;
+      right:5px;
+      top:50%;
+      transform:translateY(-50%);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      z-index:999;
+    }
+
+    /* CONTAINER */
+    .slider-container{
+      width:260px;
+      height:70px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* SLIDE TRACK */
+    .slider-track{
+      position:absolute;
+      right:0;
+      top:0;
+      width:255px;
+      height:62px;
+      border-radius:50px;
+
+      /* BLUR EFFECT */
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.15);
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      color:white;
+      font-size:18px;
+
+      opacity:0;
+      transition:0.3s;
+    }
+
+    /* ROUND BUTTON */
+    .slider-btn{
+      width:62px;
+      height:62px;
+      border-radius:50%;
+
+      position:absolute;
+      right:0;
+      top:0;
+
+      cursor:pointer;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+
+      color:white;
+      font-size:13px;
+      font-weight:bold;
+
+      user-select:none;
+      touch-action:none;
+
+      z-index:2;
+
+      /* ONLY BLUR */
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.12);
+
+      
+      transition:right 0.2s ease;
+    }
+
+    /* SHOW TRACK */
+    .slider-container:hover .slider-track{
+      opacity:1;
+    }
+
+    @media(max-width:600px){
+
+      .slider-container{
+        width:220px;
+      }
+
+      .slider-track{
+        width:220px;
+        font-size:18px;
+      }
+
+      .slider-btn{
+        width:62px;
+        height:62px;
+        font-size:16px;
+      }
+    }
+
+    button:focus {
+  outline: none;
+      }
+  </style>
+</head>
+<body>
+
+  <div class="floating-buttons">
+
+    <!-- GOOGLE -->
+    <div class="slider-container">
+      <div class="slider-track">Phase 1</div>
+      <div class="slider-btn" data-url="https://google.com">
+        1
+      </div>
+    </div>
+
+    <!-- YOUTUBE -->
+    <div class="slider-container">
+      <div class="slider-track">Phase 2</div>
+      <div class="slider-btn" data-url="https://youtube.com">
+        2
+      </div>
+    </div>
+
+    <!-- FACEBOOK -->
+    <div class="slider-container">
+      <div class="slider-track">Phase 3</div>
+      <div class="slider-btn" data-url="https://facebook.com">
+        3
+      </div>
+    </div>
+
+    <!-- OPENAI -->
+    <div class="slider-container">
+      <div class="slider-track">Phase 4</div>
+      <div class="slider-btn" data-url="https://openai.com">
+        4
+      </div>
+    </div>
+
+    <div class="slider-container">
+      <div class="slider-track">Phase 5</div>
+      <div class="slider-btn" data-url="https://openai.com">
+        5
+      </div>
+    </div>
+
+    <div class="slider-container">
+      <div class="slider-track">Phase 6</div>
+      <div class="slider-btn" data-url="https://openai.com">
+        6
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const sliders = document.querySelectorAll(".slider-btn");
+
+    sliders.forEach(slider => {
+
+      let isDragging = false;
+      let startX = 0;
+      let maxMove = 0;
+
+      const container = slider.parentElement;
+      const track = container.querySelector(".slider-track");
+
+      function startDrag(clientX){
+        isDragging = true;
+        startX = clientX;
+
+        maxMove = container.offsetWidth - slider.offsetWidth;
+
+        slider.style.transition = "none";
+        track.style.opacity = "1";
+      }
+
+      function moveDrag(clientX){
+        if(!isDragging) return;
+
+        let moveX = startX - clientX;
+
+        if(moveX < 0) moveX = 0;
+        if(moveX > maxMove) moveX = maxMove;
+
+        slider.style.right = moveX + "px";
+
+        // OPEN URL
+        if(moveX >= maxMove - 10){
+          window.location.href = slider.dataset.url;
+        }
+      }
+
+      function stopDrag(){
+        if(!isDragging) return;
+
+        isDragging = false;
+
+        slider.style.transition = "right 0.25s ease";
+        slider.style.right = "0px";
+
+        track.style.opacity = "0";
+      }
+
+      /* DESKTOP */
+      slider.addEventListener("mousedown", (e)=>{
+        startDrag(e.clientX);
+      });
+
+      document.addEventListener("mousemove", (e)=>{
+        moveDrag(e.clientX);
+      });
+
+      document.addEventListener("mouseup", stopDrag);
+
+      /* MOBILE */
+      slider.addEventListener("touchstart", (e)=>{
+        startDrag(e.touches[0].clientX);
+      });
+
+      document.addEventListener("touchmove", (e)=>{
+        moveDrag(e.touches[0].clientX);
+      }, { passive:false });
+
+      document.addEventListener("touchend", stopDrag);
+
+    });
+  </script>
+
+</body>
+</html>
