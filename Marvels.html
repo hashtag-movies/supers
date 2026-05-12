@@ -35,6 +35,7 @@
       color:#555;
       font-size:20px;
       user-select:none;
+      pointer-events:none;
     }
 
     .slider-btn{
@@ -52,12 +53,20 @@
       font-size:28px;
       font-weight:bold;
       user-select:none;
+      touch-action:none;
+      transition:right 0.2s ease;
     }
 
     .blue{ background:#007bff; }
     .green{ background:#28a745; }
     .red{ background:#dc3545; }
     .orange{ background:#fd7e14; }
+
+    @media(max-width:400px){
+      .slider-container{
+        width:90%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -93,34 +102,65 @@
 
       let isDragging = false;
       let startX = 0;
+      let maxMove = 0;
 
-      slider.addEventListener("mousedown", (e) => {
+      const container = slider.parentElement;
+
+      function startDrag(clientX){
         isDragging = true;
-        startX = e.clientX;
-      });
+        startX = clientX;
 
-      document.addEventListener("mousemove", (e) => {
-        if (!isDragging) return;
+        maxMove = container.offsetWidth - slider.offsetWidth;
 
-        let moveX = startX - e.clientX;
+        slider.style.transition = "none";
+      }
 
-        if (moveX < 0) moveX = 0;
-        if (moveX > 280) moveX = 280;
+      function moveDrag(clientX){
+        if(!isDragging) return;
+
+        let moveX = startX - clientX;
+
+        if(moveX < 0) moveX = 0;
+        if(moveX > maxMove) moveX = maxMove;
 
         slider.style.right = moveX + "px";
 
         // Redirect when fully slid
-        if (moveX >= 270) {
+        if(moveX >= maxMove - 10){
           window.location.href = slider.dataset.url;
         }
-      });
+      }
 
-      document.addEventListener("mouseup", () => {
-        if (!isDragging) return;
+      function stopDrag(){
+        if(!isDragging) return;
 
         isDragging = false;
+
+        slider.style.transition = "right 0.2s ease";
         slider.style.right = "0px";
+      }
+
+      // Desktop Events
+      slider.addEventListener("mousedown", (e) => {
+        startDrag(e.clientX);
       });
+
+      document.addEventListener("mousemove", (e) => {
+        moveDrag(e.clientX);
+      });
+
+      document.addEventListener("mouseup", stopDrag);
+
+      // Mobile Touch Events
+      slider.addEventListener("touchstart", (e) => {
+        startDrag(e.touches[0].clientX);
+      });
+
+      document.addEventListener("touchmove", (e) => {
+        moveDrag(e.touches[0].clientX);
+      }, { passive:false });
+
+      document.addEventListener("touchend", stopDrag);
 
     });
   </script>
