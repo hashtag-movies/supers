@@ -1,43 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>4 Slide Buttons</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Floating Slide Buttons</title>
 
   <style>
     body{
       margin:0;
-      padding:40px;
+      height:100vh;
       background:#f4f4f4;
       font-family:Arial, sans-serif;
+    }
+
+    /* RIGHT SIDE CONTAINER */
+    .floating-buttons{
+      position:fixed;
+      right:20px;
+      top:50%;
+      transform:translateY(-50%);
       display:flex;
       flex-direction:column;
-      gap:25px;
-      align-items:center;
+      gap:20px;
+      z-index:999;
     }
 
+    /* SLIDER AREA */
     .slider-container{
-      width:350px;
+      width:260px;
       height:70px;
-      background:#ddd;
-      border-radius:50px;
       position:relative;
       overflow:hidden;
-      box-shadow:0 4px 10px rgba(0,0,0,0.2);
     }
 
-    .slider-text{
+    /* HIDDEN BACKGROUND */
+    .slider-track{
       position:absolute;
-      width:100%;
-      text-align:center;
-      line-height:70px;
+      right:0;
+      top:0;
+      width:260px;
+      height:70px;
+      border-radius:50px;
+      background:#ddd;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       color:#555;
-      font-size:20px;
-      user-select:none;
-      pointer-events:none;
+      font-size:18px;
+      opacity:0;
+      transition:0.3s;
     }
 
+    /* ROUND BUTTON */
     .slider-btn{
       width:70px;
       height:70px;
@@ -54,7 +68,14 @@
       font-weight:bold;
       user-select:none;
       touch-action:none;
+      z-index:2;
       transition:right 0.2s ease;
+      box-shadow:0 4px 10px rgba(0,0,0,0.25);
+    }
+
+    /* SHOW TRACK ON HOVER */
+    .slider-container:hover .slider-track{
+      opacity:1;
     }
 
     .blue{ background:#007bff; }
@@ -62,37 +83,51 @@
     .red{ background:#dc3545; }
     .orange{ background:#fd7e14; }
 
-    @media(max-width:400px){
+    @media(max-width:600px){
       .slider-container{
-        width:90%;
+        width:220px;
+      }
+
+      .slider-track{
+        width:220px;
+        font-size:16px;
+      }
+
+      .slider-btn{
+        width:65px;
+        height:65px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- BUTTON 1 -->
-  <div class="slider-container">
-    <div class="slider-text">Slide for Google</div>
-    <div class="slider-btn blue" data-url="https://google.com">◀</div>
-  </div>
+  <div class="floating-buttons">
 
-  <!-- BUTTON 2 -->
-  <div class="slider-container">
-    <div class="slider-text">Slide for YouTube</div>
-    <div class="slider-btn green" data-url="https://youtube.com">◀</div>
-  </div>
+    <!-- GOOGLE -->
+    <div class="slider-container">
+      <div class="slider-track">Slide for Google</div>
+      <div class="slider-btn blue" data-url="https://google.com">◀</div>
+    </div>
 
-  <!-- BUTTON 3 -->
-  <div class="slider-container">
-    <div class="slider-text">Slide for Facebook</div>
-    <div class="slider-btn red" data-url="https://facebook.com">◀</div>
-  </div>
+    <!-- YOUTUBE -->
+    <div class="slider-container">
+      <div class="slider-track">Slide for YouTube</div>
+      <div class="slider-btn green" data-url="https://youtube.com">◀</div>
+    </div>
 
-  <!-- BUTTON 4 -->
-  <div class="slider-container">
-    <div class="slider-text">Slide for OpenAI</div>
-    <div class="slider-btn orange" data-url="https://openai.com">◀</div>
+    <!-- FACEBOOK -->
+    <div class="slider-container">
+      <div class="slider-track">Slide for Facebook</div>
+      <div class="slider-btn red" data-url="https://facebook.com">◀</div>
+    </div>
+
+    <!-- OPENAI -->
+    <div class="slider-container">
+      <div class="slider-track">Slide for OpenAI</div>
+      <div class="slider-btn orange" data-url="https://openai.com">◀</div>
+    </div>
+
   </div>
 
   <script>
@@ -105,6 +140,7 @@
       let maxMove = 0;
 
       const container = slider.parentElement;
+      const track = container.querySelector(".slider-track");
 
       function startDrag(clientX){
         isDragging = true;
@@ -113,6 +149,7 @@
         maxMove = container.offsetWidth - slider.offsetWidth;
 
         slider.style.transition = "none";
+        track.style.opacity = "1";
       }
 
       function moveDrag(clientX){
@@ -136,27 +173,29 @@
 
         isDragging = false;
 
-        slider.style.transition = "right 0.2s ease";
+        slider.style.transition = "right 0.25s ease";
         slider.style.right = "0px";
+
+        track.style.opacity = "0";
       }
 
-      // Desktop Events
-      slider.addEventListener("mousedown", (e) => {
+      // Desktop
+      slider.addEventListener("mousedown", (e)=>{
         startDrag(e.clientX);
       });
 
-      document.addEventListener("mousemove", (e) => {
+      document.addEventListener("mousemove", (e)=>{
         moveDrag(e.clientX);
       });
 
       document.addEventListener("mouseup", stopDrag);
 
-      // Mobile Touch Events
-      slider.addEventListener("touchstart", (e) => {
+      // Mobile
+      slider.addEventListener("touchstart", (e)=>{
         startDrag(e.touches[0].clientX);
       });
 
-      document.addEventListener("touchmove", (e) => {
+      document.addEventListener("touchmove", (e)=>{
         moveDrag(e.touches[0].clientX);
       }, { passive:false });
 
