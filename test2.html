@@ -1,229 +1,421 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Slider</title>
+  <style>
+    
 
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,300" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- GSAP (TweenMax) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
-
-<style>
-/* ====== BASE ====== */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-body, html {
-  margin:0;
-  padding:2rem;
-  background:#E4E0E0;
-  font-size:10px;
-  font-family:'Poppins', sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* hide svg */
-#icons {display:none}
-
-/* ===== HEADER ===== */
-.header-wrapper {
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  padding:2rem 4rem;
-  z-index:20;
-}
-
-.menu-hamburger {
-  width:1.3rem;
-  height:0.2rem;
-  background:black;
-  position:relative;
-}
-.menu-hamburger::before,
-.menu-hamburger::after {
-  content:"";
-  position:absolute;
-  width:1.3rem;
-  height:0.2rem;
-  background:black;
-}
-.menu-hamburger::before {top:-0.4rem}
-.menu-hamburger::after {top:0.4rem}
-
-/* ===== SLIDER ===== */
-.slider-content {
-  position:relative;
-  max-width:1100px;
-  margin:auto;
-  background:white;
-  overflow:hidden;
-  box-shadow:0 0 30px rgba(0,0,0,0.2);
-}
-
-.slider-container {
-  position:relative;
-  height:60rem;
-  overflow:hidden;
-}
-
-.slide {
-  position:absolute;
-  width:100%;
-  height:100%;
-  display:flex;
-}
-
-.slide-content {
-  width:50%;
-  transition:0.4s;
-}
-
-.slide-content.txt {
-  padding:5rem;
-  display:flex;
-  align-items:center;
-}
-
-.slide-content img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.copy {opacity:0}
-.active .copy {opacity:1}
-
-/* NAV */
-.nav-wrapper {
-  position:absolute;
-  right:0;
-  top:50%;
-  transform:translateY(-50%);
-  z-index:10;
-  padding:2rem;
-  text-align:center;
-}
-
-.nav-up, .nav-down {
-  cursor:pointer;
-}
-
-/* NUMBER */
-.number-wrapper {
-  position:absolute;
-  left:0;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:5rem;
-  opacity:0.2;
-  padding:2rem;
-}
-</style>
-</head>
-
-<body>
-
-<!-- SVG -->
-<svg id="icons">
-<symbol id="icon-arrow" viewBox="0 0 476.213 476.213">
-<polygon points="347.5,324.393 253.353,418.541 253.353,0 223.353,0 223.353,419.033 128.713,324.393 107.5,345.607 238.107,476.213 368.713,345.606"/>
-</symbol>
-</svg>
-
-<div class="number-wrapper"><div class="number">01</div></div>
-
-<div class="nav-wrapper">
-  <div class="nav-up">▲</div>
-  <div class="nav-down">▼</div>
-</div>
-
-<div class="slider-content">
-
-  <div class="slider-container">
-
-    <div class="slide active">
-      <div class="slide-content txt">
-        <div>
-          <span class="copy">Intro</span>
-          <h2>Hello I’m Mr.Bara</h2>
-        </div>
-      </div>
-      <div class="slide-content">
-        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/42764/slider1.jpg">
-      </div>
-    </div>
-
-    <div class="slide">
-      <div class="slide-content txt">
-        <span class="copy">Slide 2</span>
-      </div>
-      <div class="slide-content">
-        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/42764/slide2.jpg">
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script>
 const up = $('.nav-up');
 const down = $('.nav-down');
 let counter = 1;
 let number = $('.number');
 
 function moveDown(currentSlide) {
-
-  let nextSlide = currentSlide.next();
-
-  if(nextSlide.length) {
-
-    counter++;
-
-    number.text("0"+counter);
-
-    TweenMax.to(currentSlide, 0.5, {y:"-100%"});
-    TweenMax.to(nextSlide, 0.5, {y:"0%"});
-
-    currentSlide.removeClass("active");
-    nextSlide.addClass("active");
-  }
+  
+  var nextSlide = currentSlide.next();
+  var currentSlideUp = currentSlide.find('.txt');
+  var currentSlideDown = currentSlide.find('.img');
+  var nextSlideUp = nextSlide.find('.img');
+  var nextSlideDown = nextSlide.find('.txt');
+  let currentCopy = currentSlide.find('.copy'); 
+  let nextCopy = nextSlide.find('.copy'); 
+  
+  if( nextSlide.length !== 0 ) {
+    
+    counter = counter + 1;
+    
+    if( counter % 2 === 0 ) {
+      
+      TweenMax.to(number, 0.3, {x: '-100%'})
+      TweenMax.to( currentSlideUp, 0.4, { y: '-100%', delay:0.15 });
+      TweenMax.to( currentSlideDown, 0.4, { y: '100%', delay:0.15 });
+      setTimeout(function() {number.html('')},300);
+      
+    } else {
+      
+      number.html('0'+counter);
+      TweenMax.to(number, 0.3, {x: '0%', delay:1})
+      TweenMax.to( currentSlideUp, 0.4, { y: '100%', delay:0.15 });
+      TweenMax.to( currentSlideDown, 0.4, { y: '-100%', delay:0.15 });
+    }
+    
+    TweenMax.to( currentCopy, 0.3, {autoAlpha: 0, delay:0.15});
+    TweenMax.to( nextCopy, 0.3, {autoAlpha: 1, delay:1});
+    TweenMax.to( nextSlideUp, 0.4, { y: '0%', delay:0.15 });
+    TweenMax.to( nextSlideDown, 0.4, { y: '0%', delay:0.15 });
+    
+    $(currentSlide).removeClass('active');
+    $(nextSlide).addClass('active');
+    
+  } 
 }
 
 function moveUp(currentSlide) {
+  
+  var prevSlide = currentSlide.prev();
+  var currentSlideUp = currentSlide.find('.img');
+  var currentSlideDown = currentSlide.find('.txt');
+  var prevSlideUp = prevSlide.find('.txt');
+  var prevSlideDown = prevSlide.find('.img');
+  let currentCopy = currentSlide.find('.copy');
+  let prevCopy = prevSlide.find('.copy'); 
+  
+  if( prevSlide.length !== 0 ) {
+    
+    counter = counter - 1;
+    
+    if( counter % 2 === 0 ) {
+      
+      
+      TweenMax.to(number, 0.3, {x: '-100%'});
+      TweenMax.to( currentSlideUp, 0.4, { y: '-100%', delay:0.15 });
+      TweenMax.to( currentSlideDown, 0.4, { y: '100%', delay:0.15 });
+      setTimeout(function() {number.html('')},300);
 
-  let prevSlide = currentSlide.prev();
-
-  if(prevSlide.length) {
-
-    counter--;
-
-    number.text("0"+counter);
-
-    TweenMax.to(currentSlide, 0.5, {y:"100%"});
-    TweenMax.to(prevSlide, 0.5, {y:"0%"});
-
-    currentSlide.removeClass("active");
-    prevSlide.addClass("active");
+      
+    }else {
+      
+      number.html('0'+counter);
+      TweenMax.to(number, 0.3, {x: '0%', delay:1})
+      TweenMax.to( currentSlideUp, 0.4, { y: '100%', delay:0.15 });
+      TweenMax.to( currentSlideDown, 0.4, { y: '-100%', delay:0.15 });
+    }
+    
+    TweenMax.to( currentCopy, 0.3, {autoAlpha: 0, delay:0.15});
+    TweenMax.to( prevCopy, 0.3, {autoAlpha: 1, delay:1});
+    TweenMax.to( prevSlideUp, 0.4, { y: '0%', delay:0.15 });
+    TweenMax.to( prevSlideDown, 0.4, { y: '0%', delay:0.15 });
+    
+    $(currentSlide).removeClass('active');
+    $(prevSlide).addClass('active');
+    
   }
+  
 }
 
-down.on("click", function(){
-  moveDown($(".active"));
+
+down.on('click', function() {
+  
+  var currentSlide = $('.active');
+  
+  moveDown(currentSlide); 
 });
 
-up.on("click", function(){
-  moveUp($(".active"));
+up.on('click', function() {
+  
+  var currentSlide = $('.active');
+  
+  moveUp(currentSlide);
+  
 });
-</script>
 
-</body>
+
+ 
+
+
+  </style>
+</head>
+  <body>
+
+<svg id="icons" xmlns="http://www.w3.org/2000/svg">  
+<symbol id="icon-arrow" viewBox="0 0 476.213 476.213" >
+<polygon fill="inherit" points="347.5,324.393 253.353,418.541 253.353,0 223.353,0 223.353,419.033 128.713,324.393 107.5,345.607 
+	238.107,476.213 368.713,345.606 "/>
+</symbol>
+</svg>
+
+
+<div class="slider-content">
+  
+  <div class="header-wrapper">
+    <div class="header">
+      <div class="menu-wrapper">
+        <div class="menu-hamburger"></div>
+        <div class="menu-txt">Menu</div>
+      </div>
+      <div class="logo-wrapper">
+        <div class="logo"><span>Mr.</span> Bara</div>
+      </div>
+      <div class="shop-wrapper"></div>
+    </div>
+  </div>
+  
+  <div class="number-wrapper">
+    <div class="number-count">
+      <div class="number">01</div>
+    </div>
+  </div>
+  
+  <div class="nav-wrapper">
+    <div class="nav-arrows">
+      <div class="nav-up">
+           <svg id="arrow-up">
+            <use xlink:href="#icon-arrow"></use>
+          </svg>
+       </div>
+      <div class="nav-line"></div>
+      <div class="nav-down">
+         <svg id="arrow-down">
+            <use xlink:href="#icon-arrow"></use>
+          </svg>
+      </div>
+    </div>
+  </div>
+  
+  <div class="slider-wrapper">
+    <div class="slider-container">                       
+      <div class="slide active" data-order="1">
+          <div class="slide-content txt">
+            <div class="txt-wrapper">
+              <span class="copy">Intro about me</span>
+              <h2><span>Hello!</span> I’m Mr.Bara</h2>
+              <span class="subtitle">Fashion designer</span>
+              <p class="excerpt">I combine the best of our skills and ideas to present you products really worth your attention that will change the way you think about design, structure, color and website itself. </p>
+            </div>
+          </div>
+          <div class="slide-content img">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/42764/slider1.jpg" alt="" />
+          </div>
+        </div>  
+      <div class="slide" data-order="2">
+          <div class="slide-content txt">
+            <div class="txt-wrapper">
+              <span class="copy">Show with me</span>
+              <h2><span>Love Simple</span> Fashion</h2>
+               <p class="excerpt">Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+               <button>Shop now</button>
+            </div>
+          </div>
+          <div class="slide-content img">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/42764/slide2.jpg" alt="" />
+          </div>
+        </div>  
+      <div class="slide " data-order="3">
+          <div class="slide-content txt">
+            <div class="txt-wrapper">
+              <span class="copy">Fashion around me</span>
+              <ul>
+                <li>
+                  <div class="date-wrapper">
+                    <div class="date">25</div>
+                    <div class="month">April</div>
+                  </div>
+                  <div class="post-wrapper">
+                    <div class="post-title"><a href="">Top colour pantone for fashion 2016</a></div>
+                    <div class="post-info"> 
+                      <ul>
+                        <li>Admin /</li>
+                        <li>Discovery /</li>
+                        <li>15 comments</li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="date-wrapper">
+                    <div class="date">18</div>
+                    <div class="month">April</div>
+                  </div>
+                  <div class="post-wrapper">
+                    <div class="post-title"><a href="">Inspiration for fashion for Logan's designer</a></div>
+                    <div class="post-info"> 
+                      <ul>
+                        <li>Admin /</li>
+                        <li>Inspirations /</li>
+                        <li>08 comments</li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="date-wrapper">
+                    <div class="date">06</div>
+                    <div class="month">April</div>
+                  </div>
+                  <div class="post-wrapper">
+                    <div class="post-title"><a href="">Hipster -Fashion trand this summer</a></div>
+                    <div class="post-info"> 
+                      <ul>
+                        <li>Admin /</li>
+                        <li>Discovery /</li>
+                        <li>22 comments</li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <span class="view-all">View all articles</span> 
+             
+            </div>
+          </div>
+          <div class="slide-content img">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/42764/slide3.jpg" alt="" />
+          </div>
+        </div>
+      <div class="slide " data-order="4">
+          <div class="slide-content txt">
+            <div class="txt-wrapper">
+              <span class="copy">What clients say</span>
+              <h2><span>Mr.Bara</span> Best Choice </h2>
+              <p class="excerpt">I combine the best of our skills and ideas to present you products really worth your attention that will change the way you think about design, structure, color and website itself. </p>
+            </div>
+          </div>
+          <div class="slide-content img">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/42764/slide4.jpg" alt="" />
+          </div>
+        </div>
+      <div class="slide " data-order="5">
+          <div class="slide-content txt">
+            <div class="txt-wrapper">
+              <span class="copy">Keep in touch</span>
+              <h3>Melbourne, <span>Australia</span></h3>
+              <p class="excerpt">269 King Str, 05th Floor, Utral House Building. Melbourne. VIC 3000. Australia</p>
+              <p><strong>Email:</strong> <a href="mailto:mariosm18@gmail.com">mariosm18@gmail.com</a></p>
+              <p>Call directly: <span class="phone">+99 (0) 344 956 4050</span></p>
+            </div>
+          </div>
+          <div class="slide-content img">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/42764/slide5.jpg" alt="" />
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="social-wrapper">
+      <ul>
+        <li><a href="">Codepen</a></li>
+        <li><a href="">Dribbble</a></li>
+        <li><a href="">Behance</a></li>
+      </ul>
+    </div>
+    <div class="language-wrapper">
+      <ul>
+        <li><a href="">EN</a></li>
+        <li><a href="">ES</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    <script>
+
+/*
+Check out the original dribbble shot
+https://dribbble.com/shots/2797559-Mr-bara-Split-Screen
+*/
+
+
+
+const up = $('.nav-up');
+const down = $('.nav-down');
+let counter = 1;
+let number = $('.number');
+
+function moveDown(currentSlide) {
+  
+  var nextSlide = currentSlide.next();
+  var currentSlideUp = currentSlide.find('.txt');
+  var currentSlideDown = currentSlide.find('.img');
+  var nextSlideUp = nextSlide.find('.img');
+  var nextSlideDown = nextSlide.find('.txt');
+  let currentCopy = currentSlide.find('.copy'); 
+  let nextCopy = nextSlide.find('.copy'); 
+  
+  if( nextSlide.length !== 0 ) {
+    
+    counter = counter + 1;
+    
+    if( counter % 2 === 0 ) {
+      
+      TweenMax.to(number, 0.3, {x: '-100%'})
+      TweenMax.to( currentSlideUp, 0.4, { y: '-100%', delay:0.15 });
+      TweenMax.to( currentSlideDown, 0.4, { y: '100%', delay:0.15 });
+      setTimeout(function() {number.html('')},300);
+      
+    } else {
+      
+      number.html('0'+counter);
+      TweenMax.to(number, 0.3, {x: '0%', delay:1})
+      TweenMax.to( currentSlideUp, 0.4, { y: '100%', delay:0.15 });
+      TweenMax.to( currentSlideDown, 0.4, { y: '-100%', delay:0.15 });
+    }
+    
+    TweenMax.to( currentCopy, 0.3, {autoAlpha: 0, delay:0.15});
+    TweenMax.to( nextCopy, 0.3, {autoAlpha: 1, delay:1});
+    TweenMax.to( nextSlideUp, 0.4, { y: '0%', delay:0.15 });
+    TweenMax.to( nextSlideDown, 0.4, { y: '0%', delay:0.15 });
+    
+    $(currentSlide).removeClass('active');
+    $(nextSlide).addClass('active');
+    
+  } 
+}
+
+function moveUp(currentSlide) {
+  
+  var prevSlide = currentSlide.prev();
+  var currentSlideUp = currentSlide.find('.img');
+  var currentSlideDown = currentSlide.find('.txt');
+  var prevSlideUp = prevSlide.find('.txt');
+  var prevSlideDown = prevSlide.find('.img');
+  let currentCopy = currentSlide.find('.copy');
+  let prevCopy = prevSlide.find('.copy'); 
+  
+  if( prevSlide.length !== 0 ) {
+    
+    counter = counter - 1;
+    
+    if( counter % 2 === 0 ) {
+      
+      
+      TweenMax.to(number, 0.3, {x: '-100%'});
+      TweenMax.to( currentSlideUp, 0.4, { y: '-100%', delay:0.15 });
+      TweenMax.to( currentSlideDown, 0.4, { y: '100%', delay:0.15 });
+      setTimeout(function() {number.html('')},300);
+
+      
+    }else {
+      
+      number.html('0'+counter);
+      TweenMax.to(number, 0.3, {x: '0%', delay:1})
+      TweenMax.to( currentSlideUp, 0.4, { y: '100%', delay:0.15 });
+      TweenMax.to( currentSlideDown, 0.4, { y: '-100%', delay:0.15 });
+    }
+    
+    TweenMax.to( currentCopy, 0.3, {autoAlpha: 0, delay:0.15});
+    TweenMax.to( prevCopy, 0.3, {autoAlpha: 1, delay:1});
+    TweenMax.to( prevSlideUp, 0.4, { y: '0%', delay:0.15 });
+    TweenMax.to( prevSlideDown, 0.4, { y: '0%', delay:0.15 });
+    
+    $(currentSlide).removeClass('active');
+    $(prevSlide).addClass('active');
+    
+  }
+  
+}
+
+
+down.on('click', function() {
+  
+  var currentSlide = $('.active');
+  
+  moveDown(currentSlide); 
+});
+
+up.on('click', function() {
+  
+  var currentSlide = $('.active');
+  
+  moveUp(currentSlide);
+  
+});
+
+
+ 
+
+
+      
+    </script>
+  </body>
 </html>
