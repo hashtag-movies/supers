@@ -554,6 +554,80 @@ $(document).ready(function () {
   });
 
 });
+
+
+
+    const sliders = document.querySelectorAll(".slider-btn");
+
+    sliders.forEach(slider => {
+
+      let isDragging = false;
+      let startX = 0;
+      let maxMove = 0;
+
+      const container = slider.parentElement;
+      const track = container.querySelector(".slider-track");
+
+      function startDrag(clientX){
+        isDragging = true;
+        startX = clientX;
+
+        maxMove = container.offsetWidth - slider.offsetWidth;
+
+        slider.style.transition = "none";
+        track.style.opacity = "1";
+      }
+
+      function moveDrag(clientX){
+        if(!isDragging) return;
+
+        let moveX = startX - clientX;
+
+        if(moveX < 0) moveX = 0;
+        if(moveX > maxMove) moveX = maxMove;
+
+        slider.style.right = moveX + "px";
+
+        // OPEN URL
+        if(moveX >= maxMove - 10){
+          window.location.href = slider.dataset.url;
+        }
+      }
+
+      function stopDrag(){
+        if(!isDragging) return;
+
+        isDragging = false;
+
+        slider.style.transition = "right 0.25s ease";
+        slider.style.right = "0px";
+
+        track.style.opacity = "0";
+      }
+
+      /* DESKTOP */
+      slider.addEventListener("mousedown", (e)=>{
+        startDrag(e.clientX);
+      });
+
+      document.addEventListener("mousemove", (e)=>{
+        moveDrag(e.clientX);
+      });
+
+      document.addEventListener("mouseup", stopDrag);
+
+      /* MOBILE */
+      slider.addEventListener("touchstart", (e)=>{
+        startDrag(e.touches[0].clientX);
+      });
+
+      document.addEventListener("touchmove", (e)=>{
+        moveDrag(e.touches[0].clientX);
+      }, { passive:false });
+
+      document.addEventListener("touchend", stopDrag);
+
+    });
 </script>
 
 </body>
