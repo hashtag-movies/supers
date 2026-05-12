@@ -3,57 +3,49 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Slider + Carousel Together</title>
+<title>Hybrid Slider + Carousel</title>
 
 <style>
 body {
   margin: 0;
-  height: 100vh;
-  font-family: Arial, sans-serif;
   overflow: hidden;
+  font-family: Arial;
 }
 
-/* =========================
-   BACKGROUND CAROUSEL AREA
-========================= */
-.cont {
+/* CAROUSEL */
+.app {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to left bottom, #F2E3C6, #A7A1A5);
 }
 
-.app {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.app__bgimg {
+.slide {
   position: absolute;
-  width: 105%;
-  height: 100%;
-  left: -2.5%;
+  inset: 0;
+  opacity: 0;
+  transition: 0.8s;
 }
 
-.app__bgimg-image {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+.slide.active {
+  opacity: 1;
 }
 
-.app__bgimg-image--1 {
+.slide:nth-child(1) {
   background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/537051/city22222.jpg') center/cover;
 }
 
-.app__bgimg-image--2 {
+.slide:nth-child(2) {
   background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/537051/forest.jpg') center/cover;
-  opacity: 0.6;
 }
 
-/* =========================
-   FLOATING SLIDER BUTTONS
-========================= */
+.slide:nth-child(3) {
+  background: linear-gradient(#111, #444);
+}
+
+.slide:nth-child(4) {
+  background: linear-gradient(#222, #666);
+}
+
+/* SLIDER */
 .floating-buttons {
   position: fixed;
   right: 10px;
@@ -62,145 +54,49 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  z-index: 999;
-}
-
-.slider-container {
-  width: 240px;
-  height: 70px;
-  position: relative;
-}
-
-.slider-track {
-  position: absolute;
-  right: 0;
-  width: 240px;
-  height: 62px;
-  border-radius: 50px;
-
-  backdrop-filter: blur(18px);
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  opacity: 0;
-  transition: 0.3s;
 }
 
 .slider-btn {
-  width: 62px;
-  height: 62px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  position: absolute;
-  right: 0;
-
-  cursor: pointer;
+  background: rgba(255,255,255,0.1);
   color: white;
-  font-weight: bold;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  backdrop-filter: blur(20px);
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.12);
-
-  transition: right 0.2s ease;
-}
-
-/* hover show */
-.slider-container:hover .slider-track {
-  opacity: 1;
+  border: 1px solid #fff2;
+  cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<!-- ================= CAROUSEL ================= -->
-<div class="cont">
-  <div class="app">
-    <div class="app__bgimg">
-      <div class="app__bgimg-image app__bgimg-image--1"></div>
-      <div class="app__bgimg-image app__bgimg-image--2"></div>
-    </div>
-  </div>
+<div class="app">
+  <div class="slide active"></div>
+  <div class="slide"></div>
+  <div class="slide"></div>
+  <div class="slide"></div>
 </div>
 
-<!-- ================= SLIDER ================= -->
 <div class="floating-buttons">
-
-  <div class="slider-container">
-    <div class="slider-track">Phase 1</div>
-    <div class="slider-btn" data-url="https://google.com">1</div>
-  </div>
-
-  <div class="slider-container">
-    <div class="slider-track">Phase 2</div>
-    <div class="slider-btn" data-url="https://youtube.com">2</div>
-  </div>
-
-  <div class="slider-container">
-    <div class="slider-track">Phase 3</div>
-    <div class="slider-btn" data-url="https://facebook.com">3</div>
-  </div>
-
-  <div class="slider-container">
-    <div class="slider-track">Phase 4</div>
-    <div class="slider-btn" data-url="https://openai.com">4</div>
-  </div>
-
+  <button class="slider-btn" data-i="0">1</button>
+  <button class="slider-btn" data-i="1">2</button>
+  <button class="slider-btn" data-i="2">3</button>
+  <button class="slider-btn" data-i="3">4</button>
 </div>
 
 <script>
-/* SLIDER LOGIC */
-document.querySelectorAll(".slider-btn").forEach(btn => {
-  let isDragging = false;
-  let startX = 0;
-  let maxMove = 0;
+const slides = document.querySelectorAll(".slide");
+const buttons = document.querySelectorAll(".slider-btn");
 
-  const container = btn.parentElement;
-  const track = container.querySelector(".slider-track");
+function show(i){
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+}
 
-  function start(x){
-    isDragging = true;
-    startX = x;
-    maxMove = container.offsetWidth - btn.offsetWidth;
-    btn.style.transition = "none";
-    track.style.opacity = "1";
-  }
-
-  function move(x){
-    if(!isDragging) return;
-
-    let moveX = startX - x;
-    moveX = Math.max(0, Math.min(moveX, maxMove));
-
-    btn.style.right = moveX + "px";
-
-    if(moveX >= maxMove - 10){
-      window.location.href = btn.dataset.url;
-    }
-  }
-
-  function stop(){
-    isDragging = false;
-    btn.style.transition = "right 0.25s ease";
-    btn.style.right = "0px";
-    track.style.opacity = "0";
-  }
-
-  btn.addEventListener("mousedown", e => start(e.clientX));
-  document.addEventListener("mousemove", e => move(e.clientX));
-  document.addEventListener("mouseup", stop);
-
-  btn.addEventListener("touchstart", e => start(e.touches[0].clientX));
-  document.addEventListener("touchmove", e => move(e.touches[0].clientX), {passive:false});
-  document.addEventListener("touchend", stop);
+buttons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    show(+btn.dataset.i);
+  });
 });
 </script>
 
