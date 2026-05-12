@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transparent Floating Buttons</title>
+  <title>Blur Floating Buttons</title>
 
   <style>
     body{
       margin:0;
       height:100vh;
-      background:#f4f4f4;
+      background:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1400') center/cover no-repeat;
       font-family:Arial, sans-serif;
     }
 
-    /* RIGHT SIDE BUTTON AREA */
+    /* RIGHT SIDE BUTTONS */
     .floating-buttons{
       position:fixed;
       right:20px;
@@ -25,7 +25,7 @@
       z-index:999;
     }
 
-    /* SLIDER CONTAINER */
+    /* CONTAINER */
     .slider-container{
       width:260px;
       height:70px;
@@ -41,14 +41,21 @@
       width:260px;
       height:70px;
       border-radius:50px;
-      background:rgba(255,255,255,0.2);
-      backdrop-filter:blur(8px);
-      border:1px solid rgba(255,255,255,0.3);
+
+      /* BLUR EFFECT */
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.15);
+
       display:flex;
       align-items:center;
       justify-content:center;
-      color:#333;
+
+      color:white;
       font-size:18px;
+
       opacity:0;
       transition:0.3s;
     }
@@ -58,28 +65,37 @@
       width:70px;
       height:70px;
       border-radius:50%;
+
       position:absolute;
       right:0;
       top:0;
+
       cursor:pointer;
+
       display:flex;
       justify-content:center;
       align-items:center;
       text-align:center;
-      color:#222;
-      font-size:14px;
+
+      color:white;
+      font-size:13px;
       font-weight:bold;
+
       user-select:none;
       touch-action:none;
+
       z-index:2;
 
-      /* TRANSPARENT STYLE */
-      background:rgba(255,255,255,0.15);
-      backdrop-filter:blur(10px);
-      border:1px solid rgba(255,255,255,0.3);
+      /* ONLY BLUR */
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.12);
+
+      box-shadow:0 4px 12px rgba(0,0,0,0.15);
 
       transition:right 0.2s ease;
-      box-shadow:0 4px 12px rgba(0,0,0,0.15);
     }
 
     /* SHOW TRACK */
@@ -101,7 +117,7 @@
       .slider-btn{
         width:65px;
         height:65px;
-        font-size:12px;
+        font-size:11px;
       }
     }
   </style>
@@ -176,7 +192,7 @@
 
         slider.style.right = moveX + "px";
 
-        // OPEN LINK WHEN FULLY SLID
+        // OPEN URL
         if(moveX >= maxMove - 10){
           window.location.href = slider.dataset.url;
         }
@@ -193,7 +209,7 @@
         track.style.opacity = "0";
       }
 
-      // DESKTOP
+      /* DESKTOP */
       slider.addEventListener("mousedown", (e)=>{
         startDrag(e.clientX);
       });
@@ -204,7 +220,7 @@
 
       document.addEventListener("mouseup", stopDrag);
 
-      // MOBILE
+      /* MOBILE */
       slider.addEventListener("touchstart", (e)=>{
         startDrag(e.touches[0].clientX);
       });
