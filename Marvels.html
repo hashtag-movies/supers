@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Floating Slide Buttons</title>
+  <title>Transparent Floating Buttons</title>
 
   <style>
     body{
@@ -13,7 +13,7 @@
       font-family:Arial, sans-serif;
     }
 
-    /* RIGHT SIDE CONTAINER */
+    /* RIGHT SIDE BUTTON AREA */
     .floating-buttons{
       position:fixed;
       right:20px;
@@ -25,7 +25,7 @@
       z-index:999;
     }
 
-    /* SLIDER AREA */
+    /* SLIDER CONTAINER */
     .slider-container{
       width:260px;
       height:70px;
@@ -33,7 +33,7 @@
       overflow:hidden;
     }
 
-    /* HIDDEN BACKGROUND */
+    /* SLIDE TRACK */
     .slider-track{
       position:absolute;
       right:0;
@@ -41,11 +41,13 @@
       width:260px;
       height:70px;
       border-radius:50px;
-      background:#ddd;
+      background:rgba(255,255,255,0.2);
+      backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.3);
       display:flex;
       align-items:center;
       justify-content:center;
-      color:#555;
+      color:#333;
       font-size:18px;
       opacity:0;
       transition:0.3s;
@@ -63,39 +65,43 @@
       display:flex;
       justify-content:center;
       align-items:center;
-      color:white;
-      font-size:28px;
+      text-align:center;
+      color:#222;
+      font-size:14px;
       font-weight:bold;
       user-select:none;
       touch-action:none;
       z-index:2;
+
+      /* TRANSPARENT STYLE */
+      background:rgba(255,255,255,0.15);
+      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,0.3);
+
       transition:right 0.2s ease;
-      box-shadow:0 4px 10px rgba(0,0,0,0.25);
+      box-shadow:0 4px 12px rgba(0,0,0,0.15);
     }
 
-    /* SHOW TRACK ON HOVER */
+    /* SHOW TRACK */
     .slider-container:hover .slider-track{
       opacity:1;
     }
 
-    .blue{ background:#007bff; }
-    .green{ background:#28a745; }
-    .red{ background:#dc3545; }
-    .orange{ background:#fd7e14; }
-
     @media(max-width:600px){
+
       .slider-container{
         width:220px;
       }
 
       .slider-track{
         width:220px;
-        font-size:16px;
+        font-size:15px;
       }
 
       .slider-btn{
         width:65px;
         height:65px;
+        font-size:12px;
       }
     }
   </style>
@@ -107,25 +113,33 @@
     <!-- GOOGLE -->
     <div class="slider-container">
       <div class="slider-track">Slide for Google</div>
-      <div class="slider-btn blue" data-url="https://google.com">◀</div>
+      <div class="slider-btn" data-url="https://google.com">
+        Google
+      </div>
     </div>
 
     <!-- YOUTUBE -->
     <div class="slider-container">
       <div class="slider-track">Slide for YouTube</div>
-      <div class="slider-btn green" data-url="https://youtube.com">◀</div>
+      <div class="slider-btn" data-url="https://youtube.com">
+        YouTube
+      </div>
     </div>
 
     <!-- FACEBOOK -->
     <div class="slider-container">
       <div class="slider-track">Slide for Facebook</div>
-      <div class="slider-btn red" data-url="https://facebook.com">◀</div>
+      <div class="slider-btn" data-url="https://facebook.com">
+        Facebook
+      </div>
     </div>
 
     <!-- OPENAI -->
     <div class="slider-container">
       <div class="slider-track">Slide for OpenAI</div>
-      <div class="slider-btn orange" data-url="https://openai.com">◀</div>
+      <div class="slider-btn" data-url="https://openai.com">
+        OpenAI
+      </div>
     </div>
 
   </div>
@@ -162,7 +176,7 @@
 
         slider.style.right = moveX + "px";
 
-        // Redirect when fully slid
+        // OPEN LINK WHEN FULLY SLID
         if(moveX >= maxMove - 10){
           window.location.href = slider.dataset.url;
         }
@@ -179,7 +193,7 @@
         track.style.opacity = "0";
       }
 
-      // Desktop
+      // DESKTOP
       slider.addEventListener("mousedown", (e)=>{
         startDrag(e.clientX);
       });
@@ -190,7 +204,7 @@
 
       document.addEventListener("mouseup", stopDrag);
 
-      // Mobile
+      // MOBILE
       slider.addEventListener("touchstart", (e)=>{
         startDrag(e.touches[0].clientX);
       });
