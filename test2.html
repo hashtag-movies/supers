@@ -2,632 +2,227 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Animated Slider</title>
+<title>Slider</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap" rel="stylesheet">
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,300" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- GSAP (TweenMax) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
 
 <style>
-html {
+/* ====== BASE ====== */
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-  margin: 0;
-  padding: 0;
+body, html {
+  margin:0;
+  padding:2rem;
+  background:#E4E0E0;
+  font-size:10px;
+  font-family:'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-.cont {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: linear-gradient(to left bottom, #F2E3C6 0%, #A7A1A5 100%);
-  overflow: hidden;
+/* hide svg */
+#icons {display:none}
+
+/* ===== HEADER ===== */
+.header-wrapper {
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  padding:2rem 4rem;
+  z-index:20;
 }
 
-.app {
-  position: relative;
-  min-width: 850px;
-  height: 540px;
-  box-shadow: 0 0 60px rgba(0,0,0,.3);
-  overflow: hidden;
+.menu-hamburger {
+  width:1.3rem;
+  height:0.2rem;
+  background:black;
+  position:relative;
+}
+.menu-hamburger::before,
+.menu-hamburger::after {
+  content:"";
+  position:absolute;
+  width:1.3rem;
+  height:0.2rem;
+  background:black;
+}
+.menu-hamburger::before {top:-0.4rem}
+.menu-hamburger::after {top:0.4rem}
+
+/* ===== SLIDER ===== */
+.slider-content {
+  position:relative;
+  max-width:1100px;
+  margin:auto;
+  background:white;
+  overflow:hidden;
+  box-shadow:0 0 30px rgba(0,0,0,0.2);
 }
 
-.app__bgimg {
-  position: absolute;
-  top: 0;
-  left: -2.5%;
-  width: 105%;
-  height: 100%;
-  transition: transform 3.5s 770ms;
+.slider-container {
+  position:relative;
+  height:60rem;
+  overflow:hidden;
 }
 
-.app__bgimg-image {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
+.slide {
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
 }
 
-.app__bgimg-image--1 {
-  background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/537051/city22222.jpg') center center no-repeat;
-  background-size: cover;
+.slide-content {
+  width:50%;
+  transition:0.4s;
 }
 
-.app__bgimg-image--2 {
-  background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/537051/forest.jpg') center center no-repeat;
-  background-size: cover;
-  opacity: 0;
-  transition: opacity 0ms 1300ms;
+.slide-content.txt {
+  padding:5rem;
+  display:flex;
+  align-items:center;
 }
 
-.app__text {
-  position: absolute;
-  right: 165px;
-  top: 150px;
-  font-family: 'Roboto', sans-serif;
-  text-transform: uppercase;
-  z-index: 1;
+.slide-content img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-.app__text-line {
-  transition: transform 1500ms 400ms, opacity 750ms 500ms;
-  user-select: none;
+.copy {opacity:0}
+.active .copy {opacity:1}
+
+/* NAV */
+.nav-wrapper {
+  position:absolute;
+  right:0;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:10;
+  padding:2rem;
+  text-align:center;
 }
 
-.app__text-line--4 {
-  font-size: 50px;
-  font-weight: 700;
-  color: #0A101D;
+.nav-up, .nav-down {
+  cursor:pointer;
 }
 
-.app__text-line--3 {
-  font-size: 40px;
-  font-weight: 300;
+/* NUMBER */
+.number-wrapper {
+  position:absolute;
+  left:0;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:5rem;
+  opacity:0.2;
+  padding:2rem;
 }
-
-.app__text-line--2 {
-  margin-top: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #0099CC;
-}
-
-.app__text-line--1 {
-  margin-top: 15px;
-}
-
-.app__text-line--1 img {
-  width: 50px;
-}
-
-.app__text--1 .app__text-line {
-  transform: translate3d(0, -125px, 0);
-  opacity: 0;
-}
-
-.app__text--2 {
-  right: initial;
-  top: 250px;
-  left: 80px;
-  z-index: -1;
-  transition: z-index 1500ms;
-}
-
-.app__text--2 .app__text-line {
-  opacity: 0;
-}
-
-.app__img {
-  position: absolute;
-  transform: translate3d(0, -750px, 0);
-  width: 850px;
-  height: 100%;
-  transition: transform 3s cubic-bezier(0.6, 0.13, 0.31, 1.02);
-}
-
-.app__img img {
-  min-width: 100%;
-  user-select: none;
-}
-
-.initial .app__img {
-  transform: translate3d(0, 0, 0);
-}
-
-.initial .app__text--1 .app__text-line {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-}
-
-.active .app__bgimg {
-  transform: translate3d(10px, 0, 0) scale(1.05);
-  transition: transform 5s 850ms ease-in-out;
-}
-
-.active .app__bgimg-image--2 {
-  opacity: 1;
-}
-
-.active .app__img {
-  transform: translate3d(0, -1410px, 0);
-}
-
-.active .app__text--1 {
-  z-index: -1;
-}
-
-.active .app__text--1 .app__text-line {
-  transform: translate3d(0, -125px, 0);
-  opacity: 0;
-}
-
-.active .app__text--2 {
-  z-index: 1;
-}
-
-.active .app__text--2 .app__text-line {
-  transform: translate3d(0, -125px, 0);
-  opacity: 1;
-}
-
-.mouse {
-  position: relative;
-  margin-right: 20px;
-  min-width: 50px;
-  height: 80px;
-  border-radius: 30px;
-  border: 5px solid rgba(255, 255, 255, .8);
-}
-
-.mouse:after {
-  content: '';
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #fff;
-  animation: scroll 1s infinite alternate;
-}
-
-@keyframes scroll {
-  100% {
-    transform: translate(-50%, 15px);
-  }
-}
-
-.pages {
-  margin-left: 20px;
-}
-
-.pages__list {
-  list-style-type: none;
-}
-
-.pages__item {
-  position: relative;
-  margin-bottom: 10px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 3px solid #fff;
-  cursor: pointer;
-}
-
-.pages__item:after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0,0);
-  width: 75%;
-  height: 75%;
-  border-radius: 50%;
-  background-color: #fff;
-  opacity: 0;
-  transition: 500ms;
-}
-
-.pages__item:hover:after {
-  transform: translate(-50%, -50%) scale(1,1);
-  opacity: 1;
-}
-
-.page__item-active:after {
-  transform: translate(-50%, -50%) scale(1,1);
-  opacity: 1;
-}
-
-.icon-link {
-  position: absolute;
-  left: 5px;
-  bottom: 5px;
-  width: 50px;
-}
-
-.icon-link img {
-  width: 100%;
-}
-
-.icon-link--twitter {
-  left: auto;
-  right: 5px;
-}
-
-
-     /* RIGHT SIDE BUTTONS */
-    .floating-buttons{
-      position:fixed;
-      right:5px;
-      top:50%;
-      transform:translateY(-50%);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      z-index:999;
-    }
-
-    /* CONTAINER */
-    .slider-container{
-      width:260px;
-      height:70px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    /* SLIDE TRACK */
-    .slider-track{
-      position:absolute;
-      right:0;
-      top:0;
-      width:255px;
-      height:62px;
-      border-radius:50px;
-
-      /* BLUR EFFECT */
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-
-      background:rgba(255,255,255,0.08);
-      border:1px solid rgba(255,255,255,0.15);
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      color:white;
-      font-size:18px;
-
-      opacity:0;
-      transition:0.3s;
-    }
-
-    /* ROUND BUTTON */
-    .slider-btn{
-      width:62px;
-      height:62px;
-      border-radius:50%;
-
-      position:absolute;
-      right:0;
-      top:0;
-
-      cursor:pointer;
-
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-
-      color:white;
-      font-size:13px;
-      font-weight:bold;
-
-      user-select:none;
-      touch-action:none;
-
-      z-index:2;
-
-      /* ONLY BLUR */
-      backdrop-filter:blur(20px);
-      -webkit-backdrop-filter:blur(20px);
-
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.12);
-
-      
-      transition:right 0.2s ease;
-    }
-
-    /* SHOW TRACK */
-    .slider-container:hover .slider-track{
-      opacity:1;
-    }
-
-    @media(max-width:600px){
-
-      .slider-container{
-        width:220px;
-      }
-
-      .slider-track{
-        width:220px;
-        font-size:18px;
-      }
-
-      .slider-btn{
-        width:62px;
-        height:62px;
-        font-size:16px;
-      }
-    }
-
-    button:focus {
-  outline: none;
-      }
 </style>
 </head>
 
 <body>
 
-<div class="cont">
-  <div class="mouse"></div>
+<!-- SVG -->
+<svg id="icons">
+<symbol id="icon-arrow" viewBox="0 0 476.213 476.213">
+<polygon points="347.5,324.393 253.353,418.541 253.353,0 223.353,0 223.353,419.033 128.713,324.393 107.5,345.607 238.107,476.213 368.713,345.606"/>
+</symbol>
+</svg>
 
-  <div class="app">
-    <div class="app__bgimg">
-      <div class="app__bgimg-image app__bgimg-image--1"></div>
-      <div class="app__bgimg-image app__bgimg-image--2"></div>
-    </div>
+<div class="number-wrapper"><div class="number">01</div></div>
 
-    <div class="app__img">
-      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/537051/whiteTest4.png" alt="city" />
-    </div>
+<div class="nav-wrapper">
+  <div class="nav-up">▲</div>
+  <div class="nav-down">▼</div>
+</div>
 
-    <div class="app__text app__text--1">
-      <div class="app__text-line app__text-line--4">imperdiet</div>
-      <div class="app__text-line app__text-line--3">ut le</div>
-      <div class="app__text-line app__text-line--2">non tincidunt</div>
-      <div class="app__text-line app__text-line--1">
-        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/537051/opus-attachment.png" alt="" />
+<div class="slider-content">
+
+  <div class="slider-container">
+
+    <div class="slide active">
+      <div class="slide-content txt">
+        <div>
+          <span class="copy">Intro</span>
+          <h2>Hello I’m Mr.Bara</h2>
+        </div>
+      </div>
+      <div class="slide-content">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/42764/slider1.jpg">
       </div>
     </div>
 
-    <div class="app__text app__text--2">
-      <div class="app__text-line app__text-line--4">habitant</div>
-      <div class="app__text-line app__text-line--3">ut eget</div>
-      <div class="app__text-line app__text-line--2">Nam imperdiet</div>
-      <div class="app__text-line app__text-line--1">
-        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/537051/opus-attachment.png" alt="" />
+    <div class="slide">
+      <div class="slide-content txt">
+        <span class="copy">Slide 2</span>
+      </div>
+      <div class="slide-content">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/42764/slide2.jpg">
       </div>
     </div>
-  </div>
 
-  <div class="pages">
-    <ul class="pages__list">
-      <li data-target="1" class="pages__item pages__item--1 page__item-active"></li>
-      <li data-target="2" class="pages__item pages__item--2"></li>
-    </ul>
   </div>
 </div>
 
-<a href="https://dribbble.com/shots/2936160-Opus-Animation" target="_blank" class="icon-link">
-  <img src="http://icons.iconarchive.com/icons/uiconstock/socialmedia/256/Dribbble-icon.png">
-</a>
-
-<a href="https://twitter.com/mrspok407" target="_blank" class="icon-link icon-link--twitter">
-  <img src="https://cdn1.iconfinder.com/data/icons/logotypes/32/twitter-128.png">
-</a>
-
-
-
-   <div class="floating-buttons">
-
-    <!-- GOOGLE -->
-    <div class="slider-container">
-      <div class="slider-track">Phase 1</div>
-      <div class="slider-btn" data-url="https://google.com">
-        1
-      </div>
-    </div>
-
-    <!-- YOUTUBE -->
-    <div class="slider-container">
-      <div class="slider-track">Phase 2</div>
-      <div class="slider-btn" data-url="https://youtube.com">
-        2
-      </div>
-    </div>
-
-    <!-- FACEBOOK -->
-    <div class="slider-container">
-      <div class="slider-track">Phase 3</div>
-      <div class="slider-btn" data-url="https://facebook.com">
-        3
-      </div>
-    </div>
-
-    <!-- OPENAI -->
-    <div class="slider-container">
-      <div class="slider-track">Phase 4</div>
-      <div class="slider-btn" data-url="https://openai.com">
-        4
-      </div>
-    </div>
-
-    <div class="slider-container">
-      <div class="slider-track">Phase 5</div>
-      <div class="slider-btn" data-url="https://openai.com">
-        5
-      </div>
-    </div>
-
-    <div class="slider-container">
-      <div class="slider-track">Phase 6</div>
-      <div class="slider-btn" data-url="https://openai.com">
-        6
-      </div>
-    </div>
-
-  </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
-$(document).ready(function () {
+const up = $('.nav-up');
+const down = $('.nav-down');
+let counter = 1;
+let number = $('.number');
 
-  const $app = $('.app');
-  let animation = true;
-  let curSlide = 1;
-  let scrolledUp, nextSlide;
+function moveDown(currentSlide) {
 
-  let pagination = function (slide, target) {
+  let nextSlide = currentSlide.next();
 
-    animation = true;
+  if(nextSlide.length) {
 
-    if (target === undefined) {
-      nextSlide = scrolledUp ? slide - 1 : slide + 1;
-    } else {
-      nextSlide = target;
-    }
+    counter++;
 
-    $('.pages__item--' + nextSlide).addClass('page__item-active');
-    $('.pages__item--' + slide).removeClass('page__item-active');
+    number.text("0"+counter);
 
-    $app.toggleClass('active');
+    TweenMax.to(currentSlide, 0.5, {y:"-100%"});
+    TweenMax.to(nextSlide, 0.5, {y:"0%"});
 
-    setTimeout(function () {
-      animation = false;
-    }, 3000);
-  };
+    currentSlide.removeClass("active");
+    nextSlide.addClass("active");
+  }
+}
 
-  let navigateDown = function () {
-    if (curSlide > 1) return;
-    scrolledUp = false;
-    pagination(curSlide);
-    curSlide++;
-  };
+function moveUp(currentSlide) {
 
-  let navigateUp = function () {
-    if (curSlide === 1) return;
-    scrolledUp = true;
-    pagination(curSlide);
-    curSlide--;
-  };
+  let prevSlide = currentSlide.prev();
 
-  setTimeout(function () {
-    $app.addClass('initial');
-  }, 1500);
+  if(prevSlide.length) {
 
-  setTimeout(function () {
-    animation = false;
-  }, 4500);
+    counter--;
 
-  $(document).on('wheel', function (e) {
+    number.text("0"+counter);
 
-    if (animation) return;
+    TweenMax.to(currentSlide, 0.5, {y:"100%"});
+    TweenMax.to(prevSlide, 0.5, {y:"0%"});
 
-    if (e.originalEvent.deltaY < 0) {
-      navigateUp();
-    } else {
-      navigateDown();
-    }
-  });
+    currentSlide.removeClass("active");
+    prevSlide.addClass("active");
+  }
+}
 
-  $(document).on("click", ".pages__item:not(.page__item-active)", function () {
-
-    if (animation) return;
-
-    let target = +$(this).attr('data-target');
-
-    pagination(curSlide, target);
-
-    curSlide = target;
-  });
-
+down.on("click", function(){
+  moveDown($(".active"));
 });
 
-
-
-    const sliders = document.querySelectorAll(".slider-btn");
-
-    sliders.forEach(slider => {
-
-      let isDragging = false;
-      let startX = 0;
-      let maxMove = 0;
-
-      const container = slider.parentElement;
-      const track = container.querySelector(".slider-track");
-
-      function startDrag(clientX){
-        isDragging = true;
-        startX = clientX;
-
-        maxMove = container.offsetWidth - slider.offsetWidth;
-
-        slider.style.transition = "none";
-        track.style.opacity = "1";
-      }
-
-      function moveDrag(clientX){
-        if(!isDragging) return;
-
-        let moveX = startX - clientX;
-
-        if(moveX < 0) moveX = 0;
-        if(moveX > maxMove) moveX = maxMove;
-
-        slider.style.right = moveX + "px";
-
-        // OPEN URL
-        if(moveX >= maxMove - 10){
-          window.location.href = slider.dataset.url;
-        }
-      }
-
-      function stopDrag(){
-        if(!isDragging) return;
-
-        isDragging = false;
-
-        slider.style.transition = "right 0.25s ease";
-        slider.style.right = "0px";
-
-        track.style.opacity = "0";
-      }
-
-      /* DESKTOP */
-      slider.addEventListener("mousedown", (e)=>{
-        startDrag(e.clientX);
-      });
-
-      document.addEventListener("mousemove", (e)=>{
-        moveDrag(e.clientX);
-      });
-
-      document.addEventListener("mouseup", stopDrag);
-
-      /* MOBILE */
-      slider.addEventListener("touchstart", (e)=>{
-        startDrag(e.touches[0].clientX);
-      });
-
-      document.addEventListener("touchmove", (e)=>{
-        moveDrag(e.touches[0].clientX);
-      }, { passive:false });
-
-      document.addEventListener("touchend", stopDrag);
-
-    });
+up.on("click", function(){
+  moveUp($(".active"));
+});
 </script>
 
 </body>
