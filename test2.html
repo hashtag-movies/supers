@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Slider + Carousel Together</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* =========================
+   BACKGROUND CAROUSEL AREA
+========================= */
+.cont {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to left bottom, #F2E3C6, #A7A1A5);
+}
+
+.app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.app__bgimg {
+  position: absolute;
+  width: 105%;
+  height: 100%;
+  left: -2.5%;
+}
+
+.app__bgimg-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.app__bgimg-image--1 {
+  background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/537051/city22222.jpg') center/cover;
+}
+
+.app__bgimg-image--2 {
+  background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/537051/forest.jpg') center/cover;
+  opacity: 0.6;
+}
+
+/* =========================
+   FLOATING SLIDER BUTTONS
+========================= */
+.floating-buttons {
+  position: fixed;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 999;
+}
+
+.slider-container {
+  width: 240px;
+  height: 70px;
+  position: relative;
+}
+
+.slider-track {
+  position: absolute;
+  right: 0;
+  width: 240px;
+  height: 62px;
+  border-radius: 50px;
+
+  backdrop-filter: blur(18px);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.slider-btn {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  position: absolute;
+  right: 0;
+
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+
+  transition: right 0.2s ease;
+}
+
+/* hover show */
+.slider-container:hover .slider-track {
+  opacity: 1;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= CAROUSEL ================= -->
+<div class="cont">
+  <div class="app">
+    <div class="app__bgimg">
+      <div class="app__bgimg-image app__bgimg-image--1"></div>
+      <div class="app__bgimg-image app__bgimg-image--2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SLIDER ================= -->
+<div class="floating-buttons">
+
+  <div class="slider-container">
+    <div class="slider-track">Phase 1</div>
+    <div class="slider-btn" data-url="https://google.com">1</div>
+  </div>
+
+  <div class="slider-container">
+    <div class="slider-track">Phase 2</div>
+    <div class="slider-btn" data-url="https://youtube.com">2</div>
+  </div>
+
+  <div class="slider-container">
+    <div class="slider-track">Phase 3</div>
+    <div class="slider-btn" data-url="https://facebook.com">3</div>
+  </div>
+
+  <div class="slider-container">
+    <div class="slider-track">Phase 4</div>
+    <div class="slider-btn" data-url="https://openai.com">4</div>
+  </div>
+
+</div>
+
+<script>
+/* SLIDER LOGIC */
+document.querySelectorAll(".slider-btn").forEach(btn => {
+  let isDragging = false;
+  let startX = 0;
+  let maxMove = 0;
+
+  const container = btn.parentElement;
+  const track = container.querySelector(".slider-track");
+
+  function start(x){
+    isDragging = true;
+    startX = x;
+    maxMove = container.offsetWidth - btn.offsetWidth;
+    btn.style.transition = "none";
+    track.style.opacity = "1";
+  }
+
+  function move(x){
+    if(!isDragging) return;
+
+    let moveX = startX - x;
+    moveX = Math.max(0, Math.min(moveX, maxMove));
+
+    btn.style.right = moveX + "px";
+
+    if(moveX >= maxMove - 10){
+      window.location.href = btn.dataset.url;
+    }
+  }
+
+  function stop(){
+    isDragging = false;
+    btn.style.transition = "right 0.25s ease";
+    btn.style.right = "0px";
+    track.style.opacity = "0";
+  }
+
+  btn.addEventListener("mousedown", e => start(e.clientX));
+  document.addEventListener("mousemove", e => move(e.clientX));
+  document.addEventListener("mouseup", stop);
+
+  btn.addEventListener("touchstart", e => start(e.touches[0].clientX));
+  document.addEventListener("touchmove", e => move(e.touches[0].clientX), {passive:false});
+  document.addEventListener("touchend", stop);
+});
+</script>
+
+</body>
+</html>
