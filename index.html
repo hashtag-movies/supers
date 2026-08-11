@@ -1,214 +1,257 @@
-<!DOCTYPE html> 
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Superhero Animated Entrance</title>
-
-    <style>
-        body {
-            margin: 0;
-            background-color: #000;
-            overflow: hidden;
-        }
-
-        /* Fullscreen Background Slider */
-        .background-slider {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-            z-index: -1;
-        }
-
-        .background-slider .slides {
-            display: flex;
-            width: 500%;
-            height: 100%;
-            animation: slideBackground 60s infinite linear;
-        }
-
-        .background-slider img {
-            width: 20%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(30%);
-        }
-
-        @keyframes slideBackground {
-            0% { transform: translateX(0%); }
-            20% { transform: translateX(-20%); }
-            40% { transform: translateX(-40%); }
-            60% { transform: translateX(-60%); }
-            80% { transform: translateX(-80%); }
-            100% { transform: translateX(0%); }
-        }
-
-        /* Centered Animated Image */
-        .animated-image {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.3) rotate(-20deg);
-            width: 150px;
-            opacity: 0;
-            filter: drop-shadow(0px 0px 15px rgba(255, 255, 255, 0.3));
-            animation: zoomRotateFade 2s ease-out forwards;
-        }
-
-        @keyframes zoomRotateFade {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.3) rotate(-20deg);
-            }
-            50% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.1) rotate(5deg);
-            }
-            100% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1) rotate(0deg);
-            }
-        }
-
-        /* Loading Bar */
-        .loading-bar-container {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            width: 50%;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            transform: translateX(-50%);
-            overflow: hidden;
-        }
-
-        .loading-bar {
-            width: 0%;
-            height: 100%;
-            background-image: linear-gradient(to right, white 0%, brown 100%);
-            border-radius: 5px;
-            animation: loadProgress 32.5s linear forwards;
-        }
-
-        @keyframes loadProgress {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-
-        /* Page Exit Animation */
-        .page-transition {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            opacity: 0;
-            transform: scale(1);
-            z-index: 100;
-            display: none;
-            animation: zoomFadeOut 2.5s ease-in-out forwards;
-        }
-
-        @keyframes zoomFadeOut {
-            0% {
-                opacity: 0;
-                transform: scale(1);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1.2);
-            }
-        }
-
-        /* Mute/Unmute Button */
-        .mute-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-    </style>
-
-    <script>
-        // Random Redirect Time (between 30-39 seconds)
-        let randomTime = Math.floor(Math.random() * (39000 - 30000 + 1)) + 30000;
-
-        setTimeout(() => {
-            document.getElementById("pageTransition").style.display = "block";
-            document.getElementById("pageTransition").style.animation = "zoomFadeOut 2.5s ease-in-out forwards";
-
-            setTimeout(() => {
-                window.location.href = "home.html"; // Change to your actual next page
-            }, 2500);
-        }, randomTime);
-
-        // Play music on page load or user interaction
-        function playMusic() {
-            let audio = document.getElementById("bgMusic");
-            audio.volume = 0.5;
-            audio.play().catch(error => console.log("Autoplay blocked, waiting for user interaction:", error));
-        }
-
-        document.addEventListener("click", playMusic);
-
-        // Mute/Unmute functionality
-        function toggleMute() {
-            let audio = document.getElementById("bgMusic");
-            let button = document.getElementById("muteButton");
-
-            if (audio.muted) {
-                audio.muted = false;
-                button.textContent = "🔊";
-            } else {
-                audio.muted = true;
-                button.textContent = "🔇";
-            }
-        }
-    </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Notepad++ Regex Auto Formatter</title>
+<style>
+body{margin:0;background:#101216;color:#eee;font:14px Arial,sans-serif}
+.wrap{max-width:1200px;margin:auto;padding:22px}
+h1{margin:0 0 8px}
+.sub{color:#abb3bf;line-height:1.5}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:#191d24;border:1px solid #303744;border-radius:14px;padding:15px}
+label{font-weight:700;display:block;margin-bottom:8px}
+textarea{width:100%;height:550px;box-sizing:border-box;resize:vertical;background:#080a0e;color:#eee;border:1px solid #3b4350;border-radius:10px;padding:13px;font:14px/1.5 Consolas,monospace}
+.row{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}
+button{border:0;border-radius:8px;padding:10px 14px;background:#2563eb;color:white;font-weight:bold;cursor:pointer}
+button.secondary{background:#4b5563}.danger{background:#b42318}
+.box{margin-top:15px;padding:13px;border:1px solid #303744;border-radius:10px;background:#151922;color:#cbd5e1;line-height:1.7;font-size:13px}
+.check{display:inline-flex;gap:6px;margin-right:18px;font-weight:normal}
+.status{margin-top:10px;color:#abb3bf}
+@media(max-width:850px){.grid{grid-template-columns:1fr}textarea{height:400px}}
+</style>
 </head>
-<body onload="playMusic()">
+<body>
+<div class="wrap">
+<h1>Notepad++ Regex Auto Formatter</h1>
+<p class="sub">This version correctly applies the regex-style operations in the same order as your Notepad++ workflow.</p>
 
-    <!-- Background Poster Slider -->
-    <div class="background-slider">
-        <div class="slides">
-            <img src="https://i.ibb.co/v6mxQkpn/images-1-9.jpg" alt="Superhero Poster 1">
-            <img src="https://i.ibb.co/LzK4qDQY/511728-p10989225-p-v8-ak.jpg" alt="Superhero Poster 2">
-            <img src="https://i.ibb.co/S4s27QbS/images-1-8.jpg" alt="Superhero Poster 3">
-            <img src="https://i.ibb.co/zHQbD7cV/images-1-10.jpg" alt="Superhero Poster 4">
-            <img src="https://i.ibb.co/spDXp9XT/3307ca0df325da35692128a6703a4bff5a5cf8c60bb719f221cadd6c03834358.jpg" alt="Superhero Poster 5">
-        </div>
-    </div>
+<div class="grid">
+<div class="card">
+<label for="input">Input</label>
+<textarea id="input" spellcheck="false" placeholder="Paste your text here..."></textarea>
 
-    <!-- Main Animated Image -->
-    <img src="https://i.ibb.co/N6C9CdRD/20250308-230145-removebg-preview.png" alt="Animated Image" class="animated-image">
+<div class="box">
+<b>Automatic passes</b><br>
+<label class="check"><input id="removeNumbers" type="checkbox" checked> Remove number-only lines</label>
+<label class="check"><input id="threeLines" type="checkbox" checked> 3 lines → A:B:C</label>
+<label class="check"><input id="twoLines" type="checkbox" checked> 2 lines → A:B</label>
+<label class="check"><input id="removeBlank" type="checkbox" checked> Remove blank lines</label>
+</div>
 
-    <!-- Loader at the bottom -->
-    <div class="loading-bar-container">
-        <div class="loading-bar"></div>
-    </div>
+<div class="row">
+<button id="process">Process</button>
+<button class="secondary" id="sample">Load sample</button>
+<button class="danger" id="clear">Clear</button>
+</div>
+</div>
 
-    <!-- Background Music -->
-    <audio id="bgMusic" loop>
-        <source src="https://www.bensound.com/bensound-music/bensound-epic.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+<div class="card">
+<label for="output">Output</label>
+<textarea id="output" readonly spellcheck="false"></textarea>
+<div class="row">
+<button id="copy">Copy</button>
+<button class="secondary" id="download">Download TXT</button>
+</div>
+<div class="status" id="status">Ready.</div>
+</div>
+</div>
 
-    <!-- Mute/Unmute Button -->
-    <button id="muteButton" class="mute-button" onclick="toggleMute()">🔊</button>
+<div class="box">
+<b>Your Notepad++ patterns</b><br>
+3-line:
+<code>^([^\r\n]+)\R([^\r\n]+)\R([^\r\n]+)(?:\R[ \t]*)*</code><br>
+Replacement:
+<code>\1:\2:\3\r\n</code><br><br>
 
-    <!-- Page Transition -->
-    <div class="page-transition" id="pageTransition"></div>
+2-line:
+<code>^([^\r\n]+)\R([^\r\n]+)</code><br>
+Replacement:
+<code>\1:\2\r\n</code><br><br>
 
+Remove space-only lines:
+<code>^\h*\R</code><br><br>
+
+Remove number-only lines:
+<code>^\h*\d+(?:\.\d+)?\h*\R</code>
+</div>
+</div>
+
+<script>
+"use strict";
+
+const input = document.getElementById("input");
+const output = document.getElementById("output");
+const status = document.getElementById("status");
+
+function normalizeNewlines(text) {
+    return text.replace(/\r\n?/g, "\n");
+}
+
+function trimLine(s) {
+    return s.trim();
+}
+
+/* Your number-removal regex:
+   ^\h*\d+(?:\.\d+)?\h*\R
+*/
+function removeNumberLines(text) {
+    return text.replace(/^[ \t]*\d+(?:\.\d+)?[ \t]*\n/gm, "");
+}
+
+/*
+   Exact logical equivalent of your 3-line operation.
+
+   We process record blocks separated by blank lines. This prevents the
+   2-line operation from accidentally joining two separate records.
+*/
+function formatThreeLineBlocks(text) {
+    const blocks = text.split(/\n[ \t]*\n+/);
+    const result = [];
+
+    for (const block of blocks) {
+        const lines = block
+            .split("\n")
+            .map(trimLine)
+            .filter(Boolean);
+
+        if (lines.length === 3) {
+            result.push(lines[0] + ":" + lines[1] + ":" + lines[2]);
+        } else {
+            result.push(lines.join("\n"));
+        }
+    }
+
+    return result.filter(Boolean).join("\n\n");
+}
+
+/*
+   Exact logical equivalent of your 2-line operation, but scoped to a
+   blank-line-separated block so records don't get mixed together.
+*/
+function formatTwoLineBlocks(text) {
+    const blocks = text.split(/\n[ \t]*\n+/);
+    const result = [];
+
+    for (const block of blocks) {
+        const lines = block
+            .split("\n")
+            .map(trimLine)
+            .filter(Boolean);
+
+        if (lines.length === 2) {
+            result.push(lines[0] + ":" + lines[1]);
+        } else {
+            result.push(lines.join("\n"));
+        }
+    }
+
+    return result.filter(Boolean).join("\n\n");
+}
+
+/* Your blank-line regex:
+   ^\h*\R
+*/
+function removeBlankLines(text) {
+    return text.replace(/^[ \t]*\n/gm, "");
+}
+
+function processText() {
+    let text = normalizeNewlines(input.value);
+
+    if (document.getElementById("removeNumbers").checked) {
+        text = removeNumberLines(text);
+    }
+
+    if (document.getElementById("threeLines").checked) {
+        text = formatThreeLineBlocks(text);
+    }
+
+    if (document.getElementById("twoLines").checked) {
+        text = formatTwoLineBlocks(text);
+    }
+
+    if (document.getElementById("removeBlank").checked) {
+        text = removeBlankLines(text);
+    }
+
+    output.value = text.trim();
+
+    const count = output.value ? output.value.split("\n").length : 0;
+    status.textContent = count + " output line(s) generated.";
+}
+
+input.addEventListener("input", processText);
+document.getElementById("process").addEventListener("click", processText);
+
+document.getElementById("clear").addEventListener("click", function () {
+    input.value = "";
+    output.value = "";
+    status.textContent = "Cleared.";
+    input.focus();
+});
+
+document.getElementById("copy").addEventListener("click", async function () {
+    if (!output.value) {
+        status.textContent = "Nothing to copy.";
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(output.value);
+    } catch (e) {
+        output.focus();
+        output.select();
+        document.execCommand("copy");
+    }
+
+    status.textContent = "Copied to clipboard.";
+});
+
+document.getElementById("download").addEventListener("click", function () {
+    if (!output.value) {
+        status.textContent = "Nothing to download.";
+        return;
+    }
+
+    const blob = new Blob([output.value], {type:"text/plain;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = "formatted.txt";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
+    status.textContent = "Downloaded formatted.txt.";
+});
+
+document.getElementById("sample").addEventListener("click", function () {
+    input.value =
+`AAA
+BBB
+CCC
+
+
+DDD
+EEE
+
+0
+
+FFF
+GGG
+3
+
+HHH
+III`;
+
+    processText();
+});
+
+processText();
+</script>
 </body>
 </html>
